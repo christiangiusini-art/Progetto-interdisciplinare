@@ -1,0 +1,31 @@
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Utente utente = new Utente();
+
+        utente.inserisciDati(scanner);
+
+        System.out.println("Benvenuto" + utente.username);
+
+         String scelta;
+
+           do {
+            System.out.print("Vuoi visualizzare le tue informazioni? (s/n): ");
+            scelta = scanner.nextLine();
+
+            if (!scelta.equalsIgnoreCase("s") && !scelta.equalsIgnoreCase("n")) {
+                System.out.println("Scelta non valida! Inserisci solo 'S' o 'N'.");
+            }
+
+        } while (!scelta.equalsIgnoreCase("s") && !scelta.equalsIgnoreCase("n"));
+
+        if (scelta.equalsIgnoreCase("s")) {
+            utente.mostraInformazioni();
+        } else {
+           
+        }
+
+        scanner.close();
+    }
+}
