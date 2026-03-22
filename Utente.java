@@ -105,6 +105,18 @@ public class Utente{
 		return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
 				+ email + ", numTelefono=" + numTelefono + "]";
 	}
+	public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Utente other = (Utente) obj;
+			return Objects.equals(cognome, other.cognome) && Objects.equals(email, other.email) && eta == other.eta
+					&& Objects.equals(nome, other.nome) && numTelefono == other.numTelefono
+					&& Objects.equals(username, other.username);
+		}
 
 	public void inserisciDati(Scanner tastiera) {
 		System.out.println("inserisci il nome: ");
