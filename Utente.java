@@ -1,111 +1,121 @@
 package esercizi;
 
 
+import java.util.Objects;
 import java.util.Scanner;
 
-public class Utente{
-    private String nome;
-    private String cognome;
-    private int eta;
-    private String username;
-    private String email;
-    private int numTelefono;
+public class Utente {
+	/*inserisci gli attributi della classe Palestra*/
+	    private String nome;
+	    private String cognome;
+	    private int eta;
+	    private String username;
+	    private String email;
+	    private int numTelefono;
 
-    public Utente(){
+	    /*creo il costruttore di default*/
+	    public Utente(){
 
-    }
+	    }
 
-    public Utente(String n,String c,String u,String e,int num){
-       		this.nome = n;
-               this.cognome=c;
-               this.username=u;
-               this.email=e;
-               this.numTelefono=num;
+		/*creo il costruttore parametrizzato */
+	    public Utente(String n,String c,String u,String e,int num){
+	       		this.nome = n;
+	               this.cognome=c;
+	               this.username=u;
+	               this.email=e;
+	               this.numTelefono=num;
 
-    }
+	    }
 
-    public Utente(Utente u){
-               this.nome = u.nome;
-               this.cognome=u.cognome;
-               this.username=u.username;
-               this.email=u.email;
-               this.numTelefono=u.numTelefono;
-    }
+		/*creo il costruttore di copia che permette di copiare i valori di un oggetto creato all'interno di un altro */
+	    public Utente(Utente u){
+	               this.nome = u.nome;
+	               this.cognome=u.cognome;
+	               this.username=u.username;
+	               this.email=u.email;
+	               this.numTelefono=u.numTelefono;
+	    }
 
-	
-	
-	public String getNome() {
-		return nome;
-	}
+	    
+	    /*creo il metodo get per ottenere i valori degli attributi*/
+		/*creo il metodo set per impostare i valori degli attributi*/
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+		public String getNome() {
+			return nome;
+		}
 
-	public String getCognome() {
-		return cognome;
-	}
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
 
-	public void setCognome(String cognome) {
-		this.cognome = cognome;
-	}
+		public String getCognome() {
+			return cognome;
+		}
 
-	public int getEta() {
-		return eta;
-	}
+		public void setCognome(String cognome) {
+			this.cognome = cognome;
+		}
 
-	public void setEta(int eta) {
-		this.eta = eta;
-	}
+		public int getEta() {
+			return eta;
+		}
 
-	public String getUsername() {
-		return username;
-	}
+		public void setEta(int eta) {
+			this.eta = eta;
+		}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+		public String getUsername() {
+			return username;
+		}
 
-	public String getEmail() {
-		return email;
-	}
+		public void setUsername(String username) {
+			this.username = username;
+		}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+		public String getEmail() {
+			return email;
+		}
 
-	public int getNumTelefono() {
-		return numTelefono;
-	}
+		public void setEmail(String email) {
+			this.email = email;
+		}
 
-	public void setNumTelefono(int numTelefono) {
-		this.numTelefono = numTelefono;
-	}
+		public int getNumTelefono() {
+			return numTelefono;
+		}
 
-	public void mostraInformazioni() {
+		public void setNumTelefono(int numTelefono) {
+			this.numTelefono = numTelefono;
+		}
 
-        System.out.println(" Informazioni Utente ");
+		public void mostraInformazioni() {
 
-        System.out.println("Nome: " + nome);
+	        System.out.println(" Informazioni Utente ");
 
-        System.out.println("Cognome: " + cognome);
+	        System.out.println("Nome: " + nome);
 
-        System.out.println("Età: " + eta);
+	        System.out.println("Cognome: " + cognome);
 
-        System.out.println("Email: " + email);
+	        System.out.println("Età: " + eta);
 
-        System.out.println("Username: " + username);
+	        System.out.println("Email: " + email);
 
-        System.out.println("Telefono: " + numTelefono);
-	}
+	        System.out.println("Username: " + username);
 
+	        System.out.println("Telefono: " + numTelefono);
+		}
 
-	
-	public String toString() {
-		return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
-				+ email + ", numTelefono=" + numTelefono + "]";
-	}
-	public boolean equals(Object obj) {
+		/*creo il metodo toString che ritorna una stringa contenente i valori degli attributi della classe*/
+		
+		public String toString() {
+			return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
+					+ email + ", numTelefono=" + numTelefono + "]";
+		}
+
+		
+		
+		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
 			if (obj == null)
@@ -118,23 +128,25 @@ public class Utente{
 					&& Objects.equals(username, other.username);
 		}
 
-	public void inserisciDati(Scanner tastiera) {
-		System.out.println("inserisci il nome: ");
-		this.nome=tastiera.next();
-		System.out.println("inserisci il cognome: ");
-		this.cognome=tastiera.next();
-		System.out.println("inserisci l'eta: ");
-		this.eta=tastiera.nextInt();
-		System.out.println("inserisci l'username: ");
-		this.username=tastiera.next();
-		System.out.println("inserisci la tua email: ");
-		this.email=tastiera.next();
-		System.out.println("inserisci il numero di telefono: ");
-		this.numTelefono=tastiera.nextInt();
-	}
-    
-    
+		/*creo il metodo inserisci dati per far inserire i valori agli attributi*/
+		public void inserisciDati(Scanner tastiera) {
+			System.out.println("inserisci il nome: ");
+			this.nome=tastiera.next();
+			System.out.println("inserisci il cognome: ");
+			this.cognome=tastiera.next();
+			System.out.println("inserisci l'eta: ");
+			this.eta=tastiera.nextInt();
+			System.out.println("inserisci l'username: ");
+			this.username=tastiera.next();
+			System.out.println("inserisci la tua email: ");
+			this.email=tastiera.next();
+			System.out.println("inserisci il numero di telefono: ");
+			this.numTelefono=tastiera.nextInt();
+		}
+	    
+	    
+		
+	    
+	    
+	    }
 
-    
-    
-    }
