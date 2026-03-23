@@ -166,20 +166,20 @@ if (scelta == 1) {
      dati= "BMI: " + bmi;
 
     if (bmi < 18.5) {
-        return    " OBIETTIVO: AUMENTO MASSA\n";
-        		  "- 3 allenamenti a settimana\n";
-       			  "- Esercizi: panca, squat, stacchi\n";
-       			  "- Riposo tra le serie lungo\n";
+        return    " OBIETTIVO: AUMENTO MASSA
+        		  - 3 allenamenti a settimana
+       			  - Esercizi: panca, squat, stacchi
+       			  - Riposo tra le serie lungo;
     } 
     else if (bmi < 25) {
-       return " OBIETTIVO: MANTENIMENTO\n";
-	          "- 3-4 allenamenti a settimana\n";
-        	  "- Mix pesi + cardio\n";
+       return " OBIETTIVO: MANTENIMENTO
+	           -3-4 allenamenti a settimana
+        	  - Mix pesi + cardio\n";
     } 
     else {
-      return  " OBIETTIVO: DIMAGRIMENTO\n";
-        	  "- 4-5 allenamenti a settimana\n";
-        	  "- Cardio + circuito\n";
+      return  " OBIETTIVO: DIMAGRIMENTO
+        	  - 4-5 allenamenti a settimana
+        	  - Cardio + circuito\n";
     	}
 
 	}
