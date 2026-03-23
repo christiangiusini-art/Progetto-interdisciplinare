@@ -42,14 +42,14 @@ public class Main {
         System.out.println(" CALCOLO SCONTI");
         
        double annuo = Palestra.scontoCostoAnnuale
+    palestra.getUtente().getEta();
     Palestra.costoAnnuale,
-    palestra.getUtente().getEta()
-;
+    
 
 double mensile = Palestra.scontoCostoMensile
+   palestra.getUtente().getEta();
     Palestra.costoMensile,
-    palestra.getUtente().getEta()
-;
+    
         
         // Disponibilità palestra
         System.out.println(" DISPONIBILITÀ");
