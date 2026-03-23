@@ -25,7 +25,47 @@ public class Main {
         } else {
            
         }
+ Palestra palestra = new Palestra();
+        
+      
+        System.out.println(" GESTIONE PALESTRA ");
+    
+        
+        // Inserimento dati
+        palestra.inserisciDati(tastiera);
+        
 
+        System.out.println("DATI INSERITI : ");
+        System.out.println(palestra);
+        
+        // Sconti
+        System.out.println(" CALCOLO SCONTI");
+        
+        System.out.println("Costo annuale finale: " + palsetra + "€");
+        System.out.println("Costo mensile finale: " + costoMensile + "€");
+        
+        // Disponibilità palestra
+        System.out.println("\n⏰ DISPONIBILITÀ");
+        System.out.println(palestra.disponibilitaPalestra());
+        
+        // Scheda allenamento
+        System.out.println("\n🏋️ SCHEDA ALLENAMENTO PERSONALIZZATA");
+        
+        System.out.print("Inserisci il tuo peso (kg): ");
+        double peso = tastiera.nextDouble();
+        
+        System.out.print("Inserisci la tua altezza (m): ");
+        double altezza = tastiera.nextDouble();
+        
+        System.out.println(palestra.creaSchedaAllenamento(peso, altezza));
+        
+        System.out.println("\n==================================");
+        System.out.println("     ✅ OPERAZIONE COMPLETATA");
+        System.out.println("==================================");
+        
+        tastiera.close();
+    }
+}
         scanner.close();
     }
 }
