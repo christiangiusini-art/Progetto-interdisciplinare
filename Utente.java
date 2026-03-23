@@ -12,6 +12,8 @@ public class Utente {
 	    private String username;
 	    private String email;
 	    private int numTelefono;
+		private double peso;
+		private double altezza;
 
 	    /*creo il costruttore di default*/
 	    public Utente(){
@@ -19,12 +21,14 @@ public class Utente {
 	    }
 
 		/*creo il costruttore parametrizzato */
-	    public Utente(String n,String c,String u,String e,int num){
+	    public Utente(String n,String c,String u,String e,int num,double p,double a){
 	       		this.nome = n;
 	               this.cognome=c;
 	               this.username=u;
 	               this.email=e;
 	               this.numTelefono=num;
+				   this.altezza=a;
+				   this.peso=p;
 
 	    }
 
@@ -35,6 +39,8 @@ public class Utente {
 	               this.username=u.username;
 	               this.email=u.email;
 	               this.numTelefono=u.numTelefono;
+			       this.altezza=u.altezza;
+			       this.peso=u.peso;
 	    }
 
 	    
@@ -89,6 +95,22 @@ public class Utente {
 			this.numTelefono = numTelefono;
 		}
 
+		public void setpeso(string p){
+			this.peso=p;
+		}
+
+		public double getPeso(){
+			return peso;
+		}
+
+		public void setaltezza(string a){
+			this.altezza=a;
+		}
+
+		public double getAltezza(){
+			return altezza;
+		}
+
 		public void mostraInformazioni() {
 
 	        System.out.println(" Informazioni Utente ");
@@ -104,13 +126,17 @@ public class Utente {
 	        System.out.println("Username: " + username);
 
 	        System.out.println("Telefono: " + numTelefono);
+
+			System.out.println("Altezza: " + altezza);
+
+			System.out.println("Peso: " + peso);
 		}
 
 		/*creo il metodo toString che ritorna una stringa contenente i valori degli attributi della classe*/
 		
 		public String toString() {
 			return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
-					+ email + ", numTelefono=" + numTelefono + "]";
+					+ email + ", numTelefono=" + numTelefono + ", altezza=" + altezza + ", peso=" + peso]";
 		}
 
 		
@@ -142,6 +168,10 @@ public class Utente {
 			this.email=tastiera.next();
 			System.out.println("inserisci il numero di telefono: ");
 			this.numTelefono=tastiera.nextInt();
+			System.out.println("inserisci l'altezza: ");
+			this.altezza=tastiera.nextDouble();
+			System.out.println("inserisci il peso: ");
+			this.pepso=tastiera.nextDouble();
 		}
 	    
 	    
