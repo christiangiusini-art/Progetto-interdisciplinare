@@ -158,31 +158,30 @@ if (scelta == 1) {
 	    }
 	}
 	public String creaSchedaAllenamento(double peso, double altezza) {
-    double bmi = calcolaBMI(peso, altezza);
+    // Calcolo BMI
+    double bmi = peso / (altezza * altezza);
 
-    String dati;
-    dati="Peso: " + peso + " kg\n";
-    dati="Altezza: " + altezza + " cm\n";
-     dati= "BMI: " + bmi;
+    // Informazioni base
+    String dati = "Peso: " + peso + " kg\n" +
+                   "Altezza: " + altezza + " m\n" +
+                   "BMI: " + bmi + "\n";
 
+    // Creazione scheda in base al BMI
     if (bmi < 18.5) {
-        return    " OBIETTIVO: AUMENTO MASSA
-        		  - 3 allenamenti a settimana
-       			  - Esercizi: panca, squat, stacchi
-       			  - Riposo tra le serie lungo;
-    } 
-    else if (bmi < 25) {
-       return " OBIETTIVO: MANTENIMENTO
-	           -3-4 allenamenti a settimana
-        	  - Mix pesi + cardio\n";
-    } 
-    else {
-      return  " OBIETTIVO: DIMAGRIMENTO
-        	  - 4-5 allenamenti a settimana
-        	  - Cardio + circuito\n";
-    	}
-
-	}
+        return dati + "OBIETTIVO: AUMENTO MASSA\n" +
+                      "- 3 allenamenti a settimana\n" +
+                      "- Esercizi: panca, squat, stacchi\n" +
+                      "- Riposo tra le serie lungo\n";
+    } else if (bmi < 25) {
+        return dati + "OBIETTIVO: MANTENIMENTO\n" +
+                      "- 3-4 allenamenti a settimana\n" +
+                      "- Mix pesi + cardio\n";
+    } else {
+        return dati + "OBIETTIVO: DIMAGRIMENTO\n" +
+                      "- 4-5 allenamenti a settimana\n" +
+                      "- Cardio + circuito\n";
+    }
+}
 		
 }
 	
