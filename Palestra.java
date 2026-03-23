@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Palestra {
 	/*inserisci gli attributi della classe Palestra*/
-	public Static double costoAnnuale=300;
- 	public Static double costoMensile=35;
+	public static double costoAnnuale=300;
+ 	public static double costoMensile=35;
 	private String tipoAbbonamento; // "mensile" o "annuale"
 	private int valutazione;/*1 a 5*/
 	private int orario;/*dalle 7 alle 19*/
