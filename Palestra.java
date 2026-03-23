@@ -5,8 +5,9 @@ import java.util.Scanner;
 
 public class Palestra {
 	/*inserisci gli attributi della classe Palestra*/
-	private double costoAnnuale;
-	private double costoMensile;
+	public Static double costoAnnuale=300;
+ 	public Static double costoMensile=35;
+	private String tipoAbbonamento; // "mensile" o "annuale"
 	private int valutazione;/*1 a 5*/
 	private int orario;/*dalle 7 alle 19*/
 	/*passo un oggetto della classe Utente come attributo*/
@@ -38,6 +39,13 @@ public class Palestra {
 	public double getCostoMensile() {
 		return costoMensile;
 	}
+	public String getTipoAbbonamento() {
+    return tipoAbbonamento;
+}
+
+public void setTipoAbbonamento(String tipoAbbonamento) {
+    this.tipoAbbonamento = tipoAbbonamento;
+}
 
 	public void setCostoMensile(double costoMensile) {
 		this.costoMensile = costoMensile;
@@ -87,17 +95,36 @@ public class Palestra {
 	
 	/*creo il metodo inserisci dati per far inserire i valori agli attributi*/
 	public void inserisciDati(Scanner tastiera) {
-	System.out.println("inserisci il costo annuale: ");
-	this.costoAnnuale=tastiera.nextDouble();
-	System.out.println("inserisci il costo mensile: ");
-	this.costoMensile=tastiera.nextDouble();
+int scelta;
+System.out.println(" INSERIMENTO DATI PALESTRA ");
+do {
+    System.out.println("Scegli il tipo di abbonamento:");
+    System.out.println("1. Mensile");
+    System.out.println("2. Annuale");
+    System.out.print(" Scelta: ");
+
+    scelta = tastiera.nextInt();
+
+    if (scelta != 1 && scelta != 2) {
+        System.out.println(" Scelta non valida! Riprova.");
+    }
+
+} while (scelta != 1 && scelta != 2);
+
+// assegno il valore
+if (scelta == 1) {
+    this.tipoAbbonamento = "mensile";
+} else {
+    this.tipoAbbonamento = "annuale";
+}
 	System.out.println("inserisci la valutazione della palestra: ");
 	this.valutazione=tastiera.nextInt();
 	System.out.println("inserisci l'orario della palestra: ");
 	this.orario=tastiera.nextInt();
-	this.utente= new Utente();
-	/*uso inserisci dati perche quello della classe Utente esiste e posso utulizzarlo*/
-	this.utente.inserisciDati(tastiera);
+	this.utente = new Utente();
+    System.out.println(" INSERIMENTO DATI UTENTE ");
+    this.utente.inserisciDati(tastiera);
+}
 	
 	}
 	
@@ -130,7 +157,33 @@ public class Palestra {
 	        return "puoi allenarti, la palestra e aperta";
 	    }
 	}
-		
+	public String creaSchedaAllenamento(double peso, double altezza) {
+    double bmi = calcolaBMI(peso, altezza);
+
+    String dati;
+    dati="Peso: " + peso + " kg\n";
+    dati="Altezza: " + altezza + " cm\n";
+     dati= "BMI: " + bmi;
+
+    if (bmi < 18.5) {
+        return    " OBIETTIVO: AUMENTO MASSA\n";
+        		  "- 3 allenamenti a settimana\n";
+       			  "- Esercizi: panca, squat, stacchi\n";
+       			  "- Riposo tra le serie lungo\n";
+    } 
+    else if (bmi < 25) {
+       return " OBIETTIVO: MANTENIMENTO\n";
+	          "- 3-4 allenamenti a settimana\n";
+        	  "- Mix pesi + cardio\n";
+    } 
+    else {
+      return  " OBIETTIVO: DIMAGRIMENTO\n";
+        	  "- 4-5 allenamenti a settimana\n";
+        	  "- Cardio + circuito\n";
+    	}
+
 	}
+		
+}
 	
 
