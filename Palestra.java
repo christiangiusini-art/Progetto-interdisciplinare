@@ -129,23 +129,23 @@ if (scelta == 1) {
 	}
 	
 	/*metodo che applica lo sconto sul costo annuale solo se l'eta e inferiore di 18*/
-	public Double scontoCostoAnnuale() {
-		if (utente.getEta() < 18) {
-			return (costoAnnuale * 30) / 100 ;
-		}else {
-			return costoAnnuale;
-		}
-	}
+	public static double scontoCostoAnnuale(double costoAnnuale, int eta) {
+    if (eta < 18) {
+        return costoAnnuale * 0.7; // 30% di sconto
+    } else {
+        return costoAnnuale;
+    }
+}
 	
 	/*metodo che applica lo sconto sul costo mensile solo se l'eta e inferiore di 18*/
 
-	public Double scontoCostoMensile() {
-		if (utente.getEta() < 18) {
-			return (costoMensile * 30) / 100 ;
-		}else {
-			return costoMensile;
-		}
-	}
+	public static double scontoCostoMensile(double costoMensile, int eta) {
+    if (eta < 18) {
+        return costoMensile * 0.7;
+    } else {
+        return costoMensile;
+    }
+}
 	
 	/*metodo che dice all'utente se la palestra e aperta nell'orario in cui vuole allenarsi*/
 
