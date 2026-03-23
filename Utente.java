@@ -95,7 +95,7 @@ public class Utente {
 			this.numTelefono = numTelefono;
 		}
 
-		public void setpeso(string p){
+		public void setpeso(double p){
 			this.peso=p;
 		}
 
@@ -103,7 +103,7 @@ public class Utente {
 			return peso;
 		}
 
-		public void setaltezza(string a){
+		public void setaltezza(double a){
 			this.altezza=a;
 		}
 
