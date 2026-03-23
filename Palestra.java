@@ -121,10 +121,7 @@ if (scelta == 1) {
 	this.valutazione=tastiera.nextInt();
 	System.out.println("inserisci l'orario della palestra: ");
 	this.orario=tastiera.nextInt();
-	this.utente = new Utente();
-    System.out.println(" INSERIMENTO DATI UTENTE ");
-    this.utente.inserisciDati(tastiera);
-}
+	
 	
 	}
 	
