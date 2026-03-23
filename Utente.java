@@ -22,7 +22,7 @@ public class Utente {
 
 		/*creo il costruttore parametrizzato */
 	    public Utente(String n,String c,String u,String e,int num,double p,double a){
-	       		this.nome = n;
+	       		   this.nome = n;
 	               this.cognome=c;
 	               this.username=u;
 	               this.email=e;
