@@ -171,7 +171,7 @@ public class Utente {
 			System.out.println("inserisci l'altezza: ");
 			this.altezza=tastiera.nextDouble();
 			System.out.println("inserisci il peso: ");
-			this.pepso=tastiera.nextDouble();
+			this.peso=tastiera.nextDouble();
 		}
 	    
 	    
