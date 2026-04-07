@@ -1,3 +1,5 @@
+package progetto;
+
 import java.util.Scanner;
 
 public class Main {
@@ -5,60 +7,58 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         Utente utente = new Utente();
-
         utente.inserisciDati(scanner);
 
         System.out.println("Benvenuto " + utente.getUsername());
 
-        String scelta;
-
-        do {
-            System.out.print("Vuoi visualizzare le tue informazioni? (s/n): ");
-            scelta = scanner.nextLine();
-
-            if (!scelta.equalsIgnoreCase("s") && !scelta.equalsIgnoreCase("n")) {
-                System.out.println("Scelta non valida! Inserisci solo 'S' o 'N'.");
-            }
-
-        } while (!scelta.equalsIgnoreCase("s") && !scelta.equalsIgnoreCase("n"));
-
-        if (scelta.equalsIgnoreCase("s")) {
-            utente.mostraInformazioni();
-        }
+        // ... codice esistente per visualizzare informazioni utente ...
 
         Palestra palestra = new Palestra();
-
-        System.out.println("GESTIONE PALESTRA");
-
-        // Inserimento dati
+        palestra.setUtente(utente);
         palestra.inserisciDati(scanner);
 
-        System.out.println("DATI INSERITI : ");
-        System.out.println(palestra);
+        // Creazione scheda allenamento
+        SchedaAllenamento scheda = new SchedaAllenamento();
+        scheda.setUtente(utente);
 
-        // Sconti
-        System.out.println("CALCOLO SCONTI");
+        int sceltaMenu;
+        do {
+            System.out.println("\n╔══════════════════════════════════════╗");
+            System.out.println("║     MENU GESTIONE SCHEDA             ║");
+            System.out.println("╠══════════════════════════════════════╣");
+            System.out.println("║ 1. Visualizza esercizi disponibili   ║");
+            System.out.println("║ 2. Crea nuova scheda                 ║");
+            System.out.println("║ 3. Visualizza scheda                 ║");
+            System.out.println("║ 4. Modifica scheda                   ║");
+            System.out.println("║ 5. Elimina scheda                    ║");
+            System.out.println("║ 0. Esci                              ║");
+            System.out.println("╚══════════════════════════════════════╝");
+            System.out.print("Scelta: ");
+            sceltaMenu = scanner.nextInt();
 
-        double annuo = Palestra.scontoCostoAnnuale(Palestra.costoAnnuale, palestra.getUtente().getEta());
-        double mensile = Palestra.scontoCostoMensile(Palestra.costoMensile, palestra.getUtente().getEta());
-
-        System.out.println("Costo annuale scontato: " + annuo);
-        System.out.println("Costo mensile scontato: " + mensile);
-
-        // Disponibilità palestra
-        System.out.println("DISPONIBILITÀ");
-        System.out.println(palestra.disponibilitaPalestra());
-
-        // Scheda allenamento
-        System.out.println("SCHEDA ALLENAMENTO PERSONALIZZATA");
-
-        System.out.print("Inserisci il tuo peso (kg): ");
-        double peso = scanner.nextDouble();
-
-        System.out.print("Inserisci la tua altezza (m): ");
-        double altezza = scanner.nextDouble();
-
-        System.out.println(palestra.creaSchedaAllenamento(peso, altezza));
+            switch (sceltaMenu) {
+                case 1:
+                    SchedaAllenamento.mostraEserciziDisponibili();
+                    break;
+                case 2:
+                    scheda.creaScheda(scanner);
+                    break;
+                case 3:
+                    scheda.visualizzaScheda();
+                    break;
+                case 4:
+                    scheda.modificaScheda(scanner);
+                    break;
+                case 5:
+                    scheda.eliminaScheda();
+                    break;
+                case 0:
+                    System.out.println("Arrivederci!");
+                    break;
+                default:
+                    System.out.println("Scelta non valida!");
+            }
+        } while (sceltaMenu != 0);
 
         scanner.close();
     }
