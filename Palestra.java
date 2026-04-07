@@ -10,14 +10,14 @@ public class Palestra {
     public static int orarioApertura = 7;
     public static int orarioChiusura = 22;
     
-    // Attributi istanza
+    // Attributi 
     private String nomePalestra;
     private String indirizzo;
     private String tipoAbbonamento;
     private int valutazione;
     private Utente utente;
     
-    // Gestione schede - array semplice
+    // Gestione schede 
     private SchedaAllenamento[] schedeAllenamento;
     private int numeroSchede;
     private static final int MAX_SCHEDE = 10;
