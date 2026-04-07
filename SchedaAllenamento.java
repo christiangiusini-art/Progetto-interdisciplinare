@@ -5,11 +5,11 @@ import java.util.Scanner;
 public class SchedaAllenamento {
     private String nomeScheda;
     private String obiettivo;
-    private Esercizio[] esercizi;      // Array semplice
+    private Esercizio[] esercizi;      
     private int numeroEsercizi;         // Contatore esercizi nella scheda
     private Utente utente;
 
-    // 10 esercizi precaricati - array statico
+    // 10 esercizi precaricati 
     private static Esercizio[] eserciziDisponibili = new Esercizio[10];
     private static  int MAX_ESERCIZI = 10; // Max esercizi per scheda
 
