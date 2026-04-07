@@ -1,4 +1,4 @@
-package esercizi;
+package progetto;
 
 
 import java.util.Objects;
@@ -136,7 +136,7 @@ public class Utente {
 		
 		public String toString() {
 			return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
-					+ email + ", numTelefono=" + numTelefono + ", altezza=" + altezza + ", peso=" + peso]";
+			        + email + ", numTelefono=" + numTelefono + ", altezza=" + altezza + ", peso=" + peso + "]";
 		}
 
 		
@@ -179,4 +179,3 @@ public class Utente {
 	    
 	    
 	    }
-
