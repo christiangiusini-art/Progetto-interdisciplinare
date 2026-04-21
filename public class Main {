@@ -22,17 +22,18 @@ public class Main {
         scheda.setUtente(utente);
 
         int sceltaMenu;
-        do {
-            System.out.println("\n╔══════════════════════════════════════╗");
-            System.out.println("║     MENU GESTIONE SCHEDA             ║");
-            System.out.println("╠══════════════════════════════════════╣");
-            System.out.println("║ 1. Visualizza esercizi disponibili   ║");
-            System.out.println("║ 2. Crea nuova scheda                 ║");
-            System.out.println("║ 3. Visualizza scheda                 ║");
-            System.out.println("║ 4. Modifica scheda                   ║");
-            System.out.println("║ 5. Elimina scheda                    ║");
-            System.out.println("║ 0. Esci                              ║");
-            System.out.println("╚══════════════════════════════════════╝");
+        do {   
+System.out.println("\n╔══════════════════════════════════════╗");
+System.out.println("║     MENU GESTIONE SCHEDA             ║");
+System.out.println("╠══════════════════════════════════════╣");
+System.out.println("║ 1. Visualizza esercizi disponibili   ║");
+System.out.println("║ 2. Crea nuova scheda                 ║");
+System.out.println("║ 3. Visualizza scheda                 ║");
+System.out.println("║ 4. Modifica scheda                   ║");
+System.out.println("║ 5. Elimina scheda                    ║");
+System.out.println("║ 6. Controlla disponibilità palestra  ║"); 
+System.out.println("║ 0. Esci                              ║");
+System.out.println("╚══════════════════════════════════════╝");
             System.out.print("Scelta: ");
             sceltaMenu = scanner.nextInt();
 
@@ -55,6 +56,36 @@ public class Main {
                 case 0:
                     System.out.println("Arrivederci!");
                     break;
+                    case 6:
+                    System.out.println("\n══════════════════════════════════════");
+                    System.out.println("   CONTROLLO DISPONIBILITÀ PALESTRA   ");
+                    System.out.println("══════════════════════════════════════");
+
+                    // Mostra orari settimanali
+                     palestra.mostraOrariSettimanali();
+
+                    // Scelta giorno
+                    System.out.println("\nScegli il giorno:");
+                    System.out.println("0 = Lunedì");
+                    System.out.println("1 = Martedì");
+                    System.out.println("2 = Mercoledì");
+                    System.out.println("3 = Giovedì");
+                    System.out.println("4 = Venerdì");
+                    System.out.println("5 = Sabato");
+                    System.out.println("6 = Domenica");
+
+                    System.out.print("Giorno: ");
+                    int giorno = scanner.nextInt();
+
+                    // Scelta ora
+                     System.out.print("Inserisci l'ora (0-23): ");
+                        int ora = scanner.nextInt();
+
+                    // Risultato
+                    String risultato = Palestra.disponibilitaPalestra(giorno, ora);
+
+                    System.out.println("\nRisultato: " + risultato);
+                break;
                 default:
                     System.out.println("Scelta non valida!");
             }
