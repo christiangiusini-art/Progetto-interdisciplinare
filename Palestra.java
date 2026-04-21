@@ -121,26 +121,40 @@ public class Palestra {
                ora < orarioChiusuraSettimana[giorno];
     }
 
-    public static String disponibilitaPalestra(int giorno, int ora) {
-        if (!isPalestraAperta(giorno, ora)) {
-            return "Chiusa. Orario " + giorni[giorno] + ": " +
-                   orarioAperturaSettimana[giorno] + ":00 - " +
-                   orarioChiusuraSettimana[giorno] + ":00";
-        }
-        return "Aperta (" + giorni[giorno] + ")";
+  public static String disponibilitaPalestra(int giorno, int ora) {
+    if (giorno < 0 || giorno > 6) return "Giorno non valido";
+
+    String giornoStr = giorni[giorno];
+    int apertura = orarioAperturaSettimana[giorno];
+    int chiusura = orarioChiusuraSettimana[giorno];
+
+    if (ora >= apertura && ora < chiusura) {
+        return "APERTA\n" +
+               "Giorno: " + giornoStr + "\n" +
+               "Orario: " + apertura + ":00 - " + chiusura + ":00";
+    } else {
+        return "CHIUSA\n" +
+               "Giorno: " + giornoStr + "\n" +
+               "Orario: " + apertura + ":00 - " + chiusura + ":00";
     }
+}
 
     // ==================== STAMPA ORARI ====================
-    public void mostraOrariSettimanali() {
-        System.out.println("\nORARI SETTIMANALI:");
+ public void mostraOrariSettimanali() {
+    System.out.println("\n╔══════════════════════════════════════╗");
+    System.out.println("║         ORARI SETTIMANALI            ║");
+    System.out.println("╠══════════════════════════════════════╣");
 
-        for (int i = 0; i < 7; i++) {
-            System.out.println(giorni[i] + ": " +
-                    orarioAperturaSettimana[i] + ":00 - " +
-                    orarioChiusuraSettimana[i] + ":00");
-        }
+    for (int i = 0; i < 7; i++) {
+        String giorno = String.format("%-10s", giorni[i]);
+        String orario = orarioAperturaSettimana[i] + ":00 - " +
+                        orarioChiusuraSettimana[i] + ":00";
+
+        System.out.println("║ " + giorno + " → " + orario + "        ║");
     }
 
+    System.out.println("╚══════════════════════════════════════╝");
+}
     // ==================== SCHEDE ====================
     public void aggiungiScheda(SchedaAllenamento scheda) {
         if (numeroSchede < MAX_SCHEDE) {
