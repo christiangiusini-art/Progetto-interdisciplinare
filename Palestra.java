@@ -83,7 +83,7 @@ public class Palestra {
         System.out.println("\nDati palestra inseriti!");
     }
 
-    // ==================== SCONTI ====================
+    // ==================== SCONTI ANNUALI/MENSILE ====================
     public static double scontoCostoAnnuale(double costo, int eta) {
         if (eta < 18) return costo * 0.70;
         if (eta >= 65) return costo * 0.80;
@@ -155,7 +155,7 @@ public class Palestra {
 
     System.out.println("╚══════════════════════════════════════╝");
 }
-    // ==================== SCHEDE ====================
+    // ==================== SCHEDE ALLENAMENTO ====================
     public void aggiungiScheda(SchedaAllenamento scheda) {
         if (numeroSchede < MAX_SCHEDE) {
             schedeAllenamento[numeroSchede++] = scheda;
@@ -175,7 +175,7 @@ public class Palestra {
         }
     }
 
-    // ==================== INFO ====================
+    // ==================== INFO PALESTRA ====================
     public void mostraInfoPalestra() {
         System.out.println("\n===== INFO PALESTRA =====");
         System.out.println("Nome: " + nomePalestra);
