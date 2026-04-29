@@ -11,7 +11,7 @@ public class Main {
 
         System.out.println("Benvenuto " + utente.getUsername());
 
-        // ... codice esistente per visualizzare informazioni utente ...
+        // ... codice esistente per visualizzare le informazioni utente ...
 
         Palestra palestra = new Palestra();
         palestra.setUtente(utente);
