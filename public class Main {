@@ -17,7 +17,7 @@ public class Main {
         palestra.setUtente(utente);
         palestra.inserisciDati(scanner);
 
-        // Creazione scheda allenamento
+        // CREAZIONE SCHEDA ALLENAMENTO
         SchedaAllenamento scheda = new SchedaAllenamento();
         scheda.setUtente(utente);
 
@@ -61,10 +61,10 @@ System.out.println("╚═══════════════════
                     System.out.println("   CONTROLLO DISPONIBILITÀ PALESTRA   ");
                     System.out.println("══════════════════════════════════════");
 
-                    // Mostra orari settimanali
+                    // MOSTRA ORARI SETTIMANALI
                      palestra.mostraOrariSettimanali();
 
-                    // Scelta giorno
+                    // SCELTA GIORNO
                     System.out.println("\nScegli il giorno:");
                     System.out.println("0 = Lunedì");
                     System.out.println("1 = Martedì");
@@ -77,7 +77,7 @@ System.out.println("╚═══════════════════
                     System.out.print("Giorno: ");
                     int giorno = scanner.nextInt();
 
-                    // Scelta ora
+                    // SCELTA ORARIO
                      System.out.print("Inserisci l'ora (0-23): ");
                         int ora = scanner.nextInt();
 
