@@ -1,1 +1,79 @@
 
+package progetto;
+
+                Esercizio es = scheda.getEsercizi()[indice];
+
+                int serie = Integer.parseInt(JOptionPane.showInputDialog(this, "Nuove serie"));
+                int rip = Integer.parseInt(JOptionPane.showInputDialog(this, "Nuove ripetizioni"));
+                int rec = Integer.parseInt(JOptionPane.showInputDialog(this, "Nuovo recupero"));
+
+                es.setSerie(serie);
+                es.setRipetizioni(rip);
+                es.setTempoRecupero(rec);
+
+                visualizzaScheda();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Errore modifica esercizio");
+        }
+    }
+
+    // ==================== ELIMINA ====================
+
+    private void eliminaScheda() {
+
+        scheda.eliminaScheda();
+
+        areaOutput.setText("Scheda eliminata con successo");
+    }
+
+    // ==================== DISPONIBILITA ====================
+
+    private void controllaDisponibilita() {
+
+        try {
+
+            String[] giorni = {
+                    "Lunedì",
+                    "Martedì",
+                    "Mercoledì",
+                    "Giovedì",
+                    "Venerdì",
+                    "Sabato",
+                    "Domenica"
+            };
+
+            int giorno = JOptionPane.showOptionDialog(
+                    this,
+                    "Scegli giorno",
+                    "Disponibilità",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    giorni,
+                    giorni[0]
+            );
+
+            int ora = Integer.parseInt(
+                    JOptionPane.showInputDialog(this, "Inserisci ora (0-23)")
+            );
+
+            String risultato = Palestra.disponibilitaPalestra(giorno, ora);
+
+            areaOutput.setText(risultato);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Errore controllo disponibilità");
+        }
+    }
+
+    // ==================== MAIN ====================
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+            new MainGUI();
+        });
+    }
+}
