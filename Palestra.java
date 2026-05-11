@@ -20,8 +20,8 @@ public class Palestra {
     };
 
     // ==================== DATI PALESTRA ====================
-    private String nomePalestra = "Iron Paradise Gym";
-    private String indirizzo = "Via Roma 123, Milano";
+    private String nomePalestra = "LA PALESTRA ASR";
+    private String indirizzo = "Via Roma 1927 ";
 
     private String tipoAbbonamento;
     private int valutazione;
