@@ -1,188 +1,134 @@
-
-
+package progetto;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Utente {
-	/*inserisci gli attributi della classe Palestra*/
-	    private String nome;
-	    private String cognome;
-	    private int eta;
-	    private String username;
-	    private String email;
-	    private int numTelefono;
-		private double peso;
-		private double altezza;
+    private String nome;
+    private String cognome;
+    private int eta;
+    private String username;
+    private String email;
+    private String telefono;
+    private double peso;
+    private double altezza;
+    
+    // === NUOVO: ABBIAMENTO ===
+    private String tipoAbbonamento = "Nessuno"; // "Mensile", "Annuale", "Nessuno"
+    private boolean abbonamentoAttivo = false;
 
-	    /*creo il costruttore di default*/
-	    public Utente(){
+    public Utente() {}
 
-	    }
+    public Utente(String n, String c, String u, String e, String t, double p, double a) {
+        this.nome = n;
+        this.cognome = c;
+        this.username = u;
+        this.email = e;
+        this.telefono = t;
+        this.altezza = a;
+        this.peso = p;
+    }
 
-		/*creo il costruttore parametrizzato */
-	    public Utente(String n,String c,String u,String e,int num,double p,double a){
-	       		   this.nome = n;
-	               this.cognome=c;
-	               this.username=u;
-	               this.email=e;
-	               this.numTelefono=num;
-				   this.altezza=a;
-				   this.peso=p;
+    public Utente(Utente u) {
+        this.nome = u.nome;
+        this.cognome = u.cognome;
+        this.username = u.username;
+        this.email = u.email;
+        this.telefono = u.telefono;
+        this.altezza = u.altezza;
+        this.peso = u.peso;
+        this.eta = u.eta;
+        this.tipoAbbonamento = u.tipoAbbonamento;
+        this.abbonamentoAttivo = u.abbonamentoAttivo;
+    }
 
-	    }
+    public String getNomeCompleto() {
+        return nome + " " + cognome;
+    }
 
-		/*creo il costruttore di copia che permette di copiare i valori di un oggetto creato all'interno di un altro */
-	    public Utente(Utente u){
-	               this.nome = u.nome;
-	               this.cognome=u.cognome;
-	               this.username=u.username;
-	               this.email=u.email;
-	               this.numTelefono=u.numTelefono;
-			       this.altezza=u.altezza;
-			       this.peso=u.peso;
-	    }
+    // Getters / Setters Base
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-	    
-	    /*creo il metodo get per ottenere i valori degli attributi*/
-		/*creo il metodo set per impostare i valori degli attributi*/
+    public String getCognome() { return cognome; }
+    public void setCognome(String cognome) { this.cognome = cognome; }
 
-		public String getNome() {
-			return nome;
-		}
+    public int getEta() { return eta; }
+    public void setEta(int eta) { this.eta = eta; }
 
-		public void setNome(String nome) {
-			this.nome = nome;
-		}
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-		public String getCognome() {
-			return cognome;
-		}
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-		public void setCognome(String cognome) {
-			this.cognome = cognome;
-		}
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
-		public int getEta() {
-			return eta;
-		}
+    public double getPeso() { return peso; }
+    public void setPeso(double peso) { this.peso = peso; }
 
-		public void setEta(int eta) {
-			this.eta = eta;
-		}
+    public double getAltezza() { return altezza; }
+    public void setAltezza(double altezza) { this.altezza = altezza; }
 
-		public String getUsername() {
-			return username;
-		}
+    // === METODI ABBONAMENTO ===
+    public String getTipoAbbonamento() { return tipoAbbonamento; }
+    public void setTipoAbbonamento(String tipo) { 
+        this.tipoAbbonamento = tipo; 
+        if (!tipo.equals("Nessuno")) {
+            this.abbonamentoAttivo = true;
+        } else {
+            this.abbonamentoAttivo = false;
+        }
+    }
 
-		public void setUsername(String username) {
-			this.username = username;
-		}
+    public boolean isAbbonamentoAttivo() { return abbonamentoAttivo; }
+    public void setAbbonamentoAttivo(boolean attivo) { this.abbonamentoAttivo = attivo; }
 
-		public String getEmail() {
-			return email;
-		}
+    // Visualizza informazioni console
+    public void mostraInformazioni() {
+        System.out.println("=== Informazioni Utente ===");
+        System.out.println("Nome: " + nome);
+        System.out.println("Cognome: " + cognome);
+        System.out.println("Età: " + eta);
+        System.out.println("Email: " + email);
+        System.out.println("Username: " + username);
+        System.out.println("Telefono: " + telefono);
+        System.out.println("Altezza: " + altezza);
+        System.out.println("Peso: " + peso);
+        System.out.println("Abbonamento: " + tipoAbbonamento);
+        System.out.println("Attivo: " + abbonamentoAttivo);
+    }
 
-		public void setEmail(String email) {
-			this.email = email;
-		}
+    public void inserisciDati(Scanner tastiera) {
+        System.out.print("Inserisci il nome: ");
+        this.nome = tastiera.next();
+        System.out.print("Inserisci il cognome: ");
+        this.cognome = tastiera.next();
+        System.out.print("Inserisci l'età: ");
+        this.eta = tastiera.nextInt();
+        System.out.print("Inserisci l'username: ");
+        this.username = tastiera.next();
+        System.out.print("Inserisci la tua email: ");
+        this.email = tastiera.next();
+        System.out.print("Inserisci il numero di telefono: ");
+        this.telefono = tastiera.next();
+        System.out.print("Inserisci l'altezza: ");
+        this.altezza = tastiera.nextDouble();
+        System.out.print("Inserisci il peso: ");
+        this.peso = tastiera.nextDouble();
+    }
 
-		public int getNumTelefono() {
-			return numTelefono;
-		}
+    @Override
+    public String toString() {
+        return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + "]";
+    }
 
-		public void setNumTelefono(int numTelefono) {
-			this.numTelefono = numTelefono;
-		}
-
-		public void setpeso(double p){
-			this.peso=p;
-		}
-
-		public double getPeso(){
-			return peso;
-		}
-
-		public void setaltezza(double a){
-			this.altezza=a;
-		}
-
-		public double getAltezza(){
-			return altezza;
-		}
-
-		public void mostraInformazioni() {
-
-	        System.out.println(" Informazioni Utente ");
-
-	        System.out.println("Nome: " + nome);
-
-	        System.out.println("Cognome: " + cognome);
-
-	        System.out.println("Età: " + eta);
-
-	        System.out.println("Email: " + email);
-
-	        System.out.println("Username: " + username);
-
-	        System.out.println("Telefono: " + numTelefono);
-
-			System.out.println("Altezza: " + altezza);
-
-			System.out.println("Peso: " + peso);
-		}
-
-	// Metodo per ottenere le iniziali (usato dalla GUI)
-	public String iniziali() {
-		String inizialeNome = (nome != null && !nome.isEmpty()) ? nome.substring(0, 1).toUpperCase() : "?";
-		String inizialeCognome = (cognome != null && !cognome.isEmpty()) ? cognome.substring(0, 1).toUpperCase() : "?";
-		return inizialeNome + inizialeCognome;
-	}
-
-	/*creo il metodo toString che ritorna una stringa contenente i valori degli attributi della classe*/
-	
-	public String toString() {
-			return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
-			        + email + ", numTelefono=" + numTelefono + ", altezza=" + altezza + ", peso=" + peso + "]";
-		}
-
-		
-		
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Utente other = (Utente) obj;
-			return Objects.equals(cognome, other.cognome) && Objects.equals(email, other.email) && eta == other.eta
-					&& Objects.equals(nome, other.nome) && numTelefono == other.numTelefono
-					&& Objects.equals(username, other.username);
-		}
-
-		/*creo il metodo inserisci dati per far inserire i valori agli attributi*/
-		public void inserisciDati(Scanner tastiera) {
-			System.out.println("inserisci il nome: ");
-			this.nome=tastiera.next();
-			System.out.println("inserisci il cognome: ");
-			this.cognome=tastiera.next();
-			System.out.println("inserisci l'eta: ");
-			this.eta=tastiera.nextInt();
-			System.out.println("inserisci l'username: ");
-			this.username=tastiera.next();
-			System.out.println("inserisci la tua email: ");
-			this.email=tastiera.next();
-			System.out.println("inserisci il numero di telefono: ");
-			this.numTelefono=tastiera.nextInt();
-			System.out.println("inserisci l'altezza: ");
-			this.altezza=tastiera.nextDouble();
-			System.out.println("inserisci il peso: ");
-			this.peso=tastiera.nextDouble();
-		}
-	    
-	    
-		
-	    
-	    
-	    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Utente)) return false;
+        Utente other = (Utente) obj;
+        return Objects.equals(username, other.username) && Objects.equals(email, other.email);
+    }
+}
