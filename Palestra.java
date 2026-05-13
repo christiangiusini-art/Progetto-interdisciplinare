@@ -1,206 +1,91 @@
+package progetto;
 
 
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.ArrayList;
 
+/**
+ * Classe che rappresenta la palestra con il catalogo esercizi
+ */
 public class Palestra {
+    private String nome;
+    private String indirizzo;
+    private double costoMensile;
+    private double costoAnnuale;
+    private double scontoUnder18;
+    private double scontoOver65;
+    private ArrayList<Esercizio> catalogoEsercizi;
+    private String[] orariSettimanali;
 
-    // ==================== COSTI ====================
-    public static double costoAnnuale = 300;
-    public static double costoMensile = 35;
-
-    // ==================== ORARI SETTIMANALI ====================
-    // 0 = Lun, 1 = Mar, ..., 6 = Dom
-    public static int[] orarioApertura = {7, 7, 7, 7, 7, 9, 9};
-    public static int[] orarioChiusura = {22, 22, 22, 22, 22, 18, 12};
-
-    public static final String[] giorni = {
-        "Lunedì", "Martedì", "Mercoledì",
-        "Giovedì", "Venerdì", "Sabato", "Domenica"
-    };
-
-    // ==================== DATI PALESTRA ====================
-    private String nomePalestra = "LA PALESTRA ASR";
-    private String indirizzo = "Via Roma 1927 ";
-
-    private String tipoAbbonamento;
-    private int valutazione;
-    private Utente utente;
-
-    // ==================== SCHEDE ====================
-    private SchedaAllenamento[] schedeAllenamento;
-    private int numeroSchede;
-    private static final int MAX_SCHEDE = 10;
-
-    // ==================== COSTRUTTORE ====================
     public Palestra() {
-        this.schedeAllenamento = new SchedaAllenamento[MAX_SCHEDE];
-        this.numeroSchede = 0;
+        this.nome = "LA PALESTRA ASR";
+        this.indirizzo = "Via Roma 123, 00100 Roma";
+        this.costoMensile = 50.0;
+        this.costoAnnuale = 480.0;
+        this.scontoUnder18 = 20.0; // percentuale
+        this.scontoOver65 = 30.0; // percentuale
+        this.catalogoEsercizi = new ArrayList<>();
+        this.orariSettimanali = new String[] {
+            "Lunedi: 06:00 - 22:00",
+            "Martedi: 06:00 - 22:00",
+            "Mercoledi: 06:00 - 22:00",
+            "Giovedi: 06:00 - 22:00",
+            "Venerdi: 06:00 - 22:00",
+            "Sabato: 08:00 - 20:00",
+            "Domenica: 09:00 - 14:00"
+        };
+        
     }
 
-    // ==================== GETTER ====================
-    public String getNomePalestra() { return nomePalestra; }
-    public String getIndirizzo() { return indirizzo; }
-    public static double getCostoAnnuale() { return costoAnnuale; }
-    public static double getCostoMensile() { return costoMensile; }
-    public String getTipoAbbonamento() { return tipoAbbonamento; }
-    public int getValutazione() { return valutazione; }
-    public Utente getUtente() { return utente; }
-    public int getNumeroSchede() { return numeroSchede; }
+   
+    public double calcolaCosto(int eta, boolean annuale) {
+        double costo = annuale ? costoAnnuale : costoMensile;
 
-    public void setUtente(Utente utente) { this.utente = utente; }
+        if (eta < 18) {
+            costo = costo * (1 - scontoUnder18 / 100);
+        } else if (eta >= 65) {
+            costo = costo * (1 - scontoOver65 / 100);
+        }
 
-    // ==================== INSERIMENTO DATI ====================
-    public void inserisciDati(Scanner tastiera) {
-
-        System.out.println("\n======================================");
-        System.out.println("    INSERIMENTO DATI PALESTRA         ");
-        System.out.println("======================================");
-
-        tastiera.nextLine();
-
-        // Nome e indirizzo fissi
-        System.out.println("Nome palestra: " + nomePalestra);
-        System.out.println("Indirizzo: " + indirizzo);
-
-        int scelta;
-
-        do {
-            System.out.println("\nScegli il tipo di abbonamento:");
-            System.out.println("1. Mensile (EUR " + costoMensile + ")");
-            System.out.println("2. Annuale (EUR " + costoAnnuale + ")");
-            System.out.print("Scelta: ");
-            scelta = tastiera.nextInt();
-        } while (scelta != 1 && scelta != 2);
-
-        tipoAbbonamento = (scelta == 1) ? "mensile" : "annuale";
-
-        do {
-            System.out.print("Inserisci la valutazione (1-5): ");
-            valutazione = tastiera.nextInt();
-        } while (valutazione < 1 || valutazione > 5);
-
-        System.out.println("\nDati palestra inseriti!");
-    }
-
-    // ==================== SCONTI ANNUALI/MENSILE ====================
-    public static double scontoCostoAnnuale(double costo, int eta) {
-        if (eta < 18) return costo * 0.70;
-        if (eta >= 65) return costo * 0.80;
         return costo;
     }
 
-    public static double scontoCostoMensile(double costo, int eta) {
-        if (eta < 18) return costo * 0.70;
-        if (eta >= 65) return costo * 0.80;
-        return costo;
+    // Getters
+    public String getNome() {
+        return nome;
     }
 
-    public double calcolaCostoFinale() {
-        if (utente == null) return 0;
+    public String getIndirizzo() {
+        return indirizzo;
+    }
 
-        if (tipoAbbonamento.equals("mensile")) {
-            return scontoCostoMensile(costoMensile, utente.getEta());
+    public double getCostoMensile() {
+        return costoMensile;
+    }
+
+    public double getCostoAnnuale() {
+        return costoAnnuale;
+    }
+
+    public double getScontoUnder18() {
+        return scontoUnder18;
+    }
+
+    public double getScontoOver65() {
+        return scontoOver65;
+    }
+
+    public ArrayList<Esercizio> getCatalogoEsercizi() {
+        return catalogoEsercizi;
+    }
+
+    public Esercizio getEsercizio(int index) {
+        if (index >= 0 && index < catalogoEsercizi.size()) {
+            return catalogoEsercizi.get(index);
         }
-        return scontoCostoAnnuale(costoAnnuale, utente.getEta());
+        return null;
     }
 
-    // ==================== ORARI ====================
-    public static String getOrarioGiorno(int giorno) {
-        if (giorno < 0 || giorno > 6) return "Giorno non valido";
-
-        return giorni[giorno] + ": " +
-               orarioApertura[giorno] + ":00 - " +
-               orarioChiusura[giorno] + ":00";
-    }
-
-    public static boolean isPalestraAperta(int giorno, int ora) {
-        if (giorno < 0 || giorno > 6) return false;
-
-        return ora >= orarioApertura[giorno] &&
-               ora < orarioChiusura[giorno];
-    }
-
-  public static String disponibilitaPalestra(int giorno, int ora) {
-    if (giorno < 0 || giorno > 6) return "Giorno non valido";
-
-    String giornoStr = giorni[giorno];
-    int apertura = orarioApertura[giorno];
-    int chiusura = orarioChiusura[giorno];
-
-    if (ora >= apertura && ora < chiusura) {
-        return "APERTA\n" +
-               "Giorno: " + giornoStr + "\n" +
-               "Orario: " + apertura + ":00 - " + chiusura + ":00";
-    } else {
-        return "CHIUSA\n" +
-               "Giorno: " + giornoStr + "\n" +
-               "Orario: " + apertura + ":00 - " + chiusura + ":00";
-    }
-}
-
-    // ==================== STAMPA ORARI ====================
- public void mostraOrariSettimanali() {
-    System.out.println("\n╔══════════════════════════════════════╗");
-    System.out.println("║         ORARI SETTIMANALI            ║");
-    System.out.println("╠══════════════════════════════════════╣");
-
-    for (int i = 0; i < 7; i++) {
-        String giorno = String.format("%-10s", giorni[i]);
-        String orario = orarioApertura[i] + ":00 - " +
-                        orarioChiusura[i] + ":00";
-
-        System.out.println("║ " + giorno + " → " + orario + "        ║");
-    }
-
-    System.out.println("╚══════════════════════════════════════╝");
-}
-    // ==================== SCHEDE ALLENAMENTO ====================
-    public void aggiungiScheda(SchedaAllenamento scheda) {
-        if (numeroSchede < MAX_SCHEDE) {
-            schedeAllenamento[numeroSchede++] = scheda;
-            System.out.println("Scheda aggiunta!");
-        } else {
-            System.out.println("Limite raggiunto!");
-        }
-    }
-
-    public void rimuoviScheda(int indice) {
-        if (indice >= 0 && indice < numeroSchede) {
-            for (int i = indice; i < numeroSchede - 1; i++) {
-                schedeAllenamento[i] = schedeAllenamento[i + 1];
-            }
-            schedeAllenamento[--numeroSchede] = null;
-            System.out.println("Scheda rimossa!");
-        }
-    }
-
-    // ==================== INFO PALESTRA ====================
-    public void mostraInfoPalestra() {
-        System.out.println("\n===== INFO PALESTRA =====");
-        System.out.println("Nome: " + nomePalestra);
-        System.out.println("Indirizzo: " + indirizzo);
-        System.out.println("Valutazione: " + valutazione + "/5");
-
-        mostraOrariSettimanali();
-
-        System.out.println("Abbonamento: " + tipoAbbonamento);
-        System.out.println("Costo finale: EUR " + String.format("%.2f", calcolaCostoFinale()));
-    }
-
-    // ==================== OVERRIDE ====================
-    @Override
-    public String toString() {
-        return nomePalestra + " - " + indirizzo;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Palestra)) return false;
-
-        Palestra p = (Palestra) obj;
-        return Objects.equals(nomePalestra, p.nomePalestra) &&
-               Objects.equals(indirizzo, p.indirizzo);
+    public String[] getOrariSettimanali() {
+        return orariSettimanali;
     }
 }
