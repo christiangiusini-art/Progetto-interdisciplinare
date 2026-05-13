@@ -1,0 +1,16 @@
+Esercizio
+- nome: String
+- gruppoMuscolare : String
+- serie : int
+- ripetizioni : int
++ getNome() : String
++ setNome(String) : void
++ getGruppoMuscolare() : String
++ setGruppoMuscolare(String) : void
++ getSerie() : int
++ setSerie(int) : void
++ getRipetizioni() : int
++ setRipetizioni(int) : void
++ getTempoRecupero() : int
++ setTempoRecupero(int) : void
++ toString() : String
