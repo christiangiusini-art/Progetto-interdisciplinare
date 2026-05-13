@@ -1,4 +1,4 @@
-package progetto;
+
 
 public class Esercizio {
     private String nome;
@@ -8,11 +8,11 @@ public class Esercizio {
     private int tempoRecupero; // in secondi
 
     // Costruttore di default
-    public Esercizio(String string, String string2, String string3) {
+    public Esercizio() {
     }
 
     // Costruttore parametrizzato
-    public Esercizio(String nome, String gruppoMuscolare) {
+    public Esercizio(String nome, String gruppoMuscolare, int serie, int ripetizioni, int tempoRecupero) {
         this.nome = nome;
         this.gruppoMuscolare = gruppoMuscolare;
         this.serie = serie;
@@ -65,9 +65,4 @@ public class Esercizio {
     public String toString() {
         return nome + " (" + gruppoMuscolare + ") - " + serie + "x" + ripetizioni + " | Recupero: " + tempoRecupero + "s";
     }
-
-	public String getDescrizione() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
