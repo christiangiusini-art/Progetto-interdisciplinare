@@ -1,38 +1,25 @@
+package progetto;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-public class SchedaAllenamento {
-    private String nomeScheda;
+public class SchedaAllenamento{ 
+   private String nomeScheda;
     private String obiettivo;
-    private List<Esercizio> esercizi;
+    private Esercizio[] esercizi;      // Array semplice
+    private int numeroEsercizi;         // Contatore esercizi nella scheda
     private Utente utente;
 
-    // Max esercizi per scheda (pubblico per la GUI)
-    public static final int MAX_ESERCIZI = 10;
-
-    // 10 esercizi precaricati
+    // 10 esercizi precaricati - array statico
     private static Esercizio[] eserciziDisponibili = new Esercizio[10];
+    private static  int MAX_ESERCIZI = 10; // Max esercizi per scheda
 
-    // Inizializzazione statica dei 10 esercizi
-    static {
-        eserciziDisponibili[0] = new Esercizio("Panca Piana", "Petto", 4, 10, 90);
-        eserciziDisponibili[1] = new Esercizio("Squat", "Gambe", 4, 8, 120);
-        eserciziDisponibili[2] = new Esercizio("Stacco da Terra", "Schiena", 4, 6, 150);
-        eserciziDisponibili[3] = new Esercizio("Trazioni", "Dorsali", 3, 10, 90);
-        eserciziDisponibili[4] = new Esercizio("Military Press", "Spalle", 3, 10, 90);
-        eserciziDisponibili[5] = new Esercizio("Curl Bicipiti", "Braccia", 3, 12, 60);
-        eserciziDisponibili[6] = new Esercizio("French Press", "Tricipiti", 3, 12, 60);
-        eserciziDisponibili[7] = new Esercizio("Leg Press", "Gambe", 4, 12, 90);
-        eserciziDisponibili[8] = new Esercizio("Crunch", "Addominali", 3, 20, 45);
-        eserciziDisponibili[9] = new Esercizio("Affondi", "Gambe", 3, 12, 60);
-    }
+   
 
     // Costruttore di default
     public SchedaAllenamento() {
-        this.esercizi = new ArrayList<>();
+        this.esercizi = new Esercizio[MAX_ESERCIZI];
+        this.numeroEsercizi = 0;
     }
 
     // Costruttore parametrizzato
@@ -40,7 +27,8 @@ public class SchedaAllenamento {
         this.nomeScheda = nomeScheda;
         this.obiettivo = obiettivo;
         this.utente = utente;
-        this.esercizi = new ArrayList<>();
+        this.esercizi = new Esercizio[MAX_ESERCIZI];
+        this.numeroEsercizi = 0;
     }
 
     // Getters e Setters
@@ -48,36 +36,33 @@ public class SchedaAllenamento {
     public void setNomeScheda(String nomeScheda) { this.nomeScheda = nomeScheda; }
     public String getObiettivo() { return obiettivo; }
     public void setObiettivo(String obiettivo) { this.obiettivo = obiettivo; }
-    
-    // Ritorna la lista di esercizi (usato dalla GUI)
-    public List<Esercizio> getEsercizi() { return esercizi; }
-    
-    public int getNumeroEsercizi() { return esercizi.size(); }
+    public Esercizio[] getEsercizi() { return esercizi; }
+    public int getNumeroEsercizi() { return numeroEsercizi; }
     public Utente getUtente() { return utente; }
     public void setUtente(Utente utente) { this.utente = utente; }
     public static Esercizio[] getEserciziDisponibili() { return eserciziDisponibili; }
 
-    // Aggiunge un esercizio alla lista (ritorna boolean per la GUI)
+    // Aggiunge un esercizio all'array
     public boolean aggiungiEsercizio(Esercizio es) {
-        if (esercizi.size() < MAX_ESERCIZI) {
-            esercizi.add(es);
-            return true;
+        if (numeroEsercizi < MAX_ESERCIZI) {
+            esercizi[numeroEsercizi] = es;
+            numeroEsercizi++;
+        } else {
+            System.out.println("Scheda piena! Max " + MAX_ESERCIZI + " esercizi.");
         }
-        return false;
+		return false;
     }
 
     // Rimuove un esercizio per indice
     public void rimuoviEsercizio(int indice) {
-        if (indice >= 0 && indice < esercizi.size()) {
-            esercizi.remove(indice);
+        if (indice >= 0 && indice < numeroEsercizi) {
+            // Sposta gli elementi a sinistra
+            for (int i = indice; i < numeroEsercizi - 1; i++) {
+                esercizi[i] = esercizi[i + 1];
+            }
+            esercizi[numeroEsercizi - 1] = null;
+            numeroEsercizi--;
         }
-    }
-
-    // Svuota la scheda (usato dalla GUI)
-    public void svuota() {
-        esercizi.clear();
-        this.nomeScheda = null;
-        this.obiettivo = null;
     }
 
     // Visualizza esercizi disponibili
@@ -138,10 +123,7 @@ public class SchedaAllenamento {
                     
                     Esercizio esercizioPersonalizzato = new Esercizio(
                         esercizioScelto.getNome(),
-                        esercizioScelto.getGruppoMuscolare(),
-                        serie,
-                        ripetizioni,
-                        recupero
+                        esercizioScelto.getGruppoMuscolare(), personalizza
                     );
                     aggiungiEsercizio(esercizioPersonalizzato);
                 } else {
@@ -164,7 +146,7 @@ public class SchedaAllenamento {
 
     // Visualizzazione scheda
     public void visualizzaScheda() {
-        if (this.nomeScheda == null || esercizi.isEmpty()) {
+        if (this.nomeScheda == null || this.numeroEsercizi == 0) {
             System.out.println("\nNessuna scheda presente. Crea prima una scheda!");
             return;
         }
@@ -180,8 +162,8 @@ public class SchedaAllenamento {
         System.out.println("----------------------------------------------");
         System.out.println("ESERCIZI:");
         
-        for (int i = 0; i < esercizi.size(); i++) {
-            System.out.println((i + 1) + ". " + esercizi.get(i));
+        for (int i = 0; i < numeroEsercizi; i++) {
+            System.out.println((i + 1) + ". " + esercizi[i]);
         }
         
         System.out.println("==============================================\n");
@@ -189,7 +171,7 @@ public class SchedaAllenamento {
 
     // Modifica scheda
     public void modificaScheda(Scanner scanner) {
-        if (this.nomeScheda == null || esercizi.isEmpty()) {
+        if (this.nomeScheda == null || this.numeroEsercizi == 0) {
             System.out.println("\nNessuna scheda presente. Crea prima una scheda!");
             return;
         }
@@ -245,7 +227,7 @@ public class SchedaAllenamento {
                     visualizzaScheda();
                     System.out.print("Numero esercizio da rimuovere: ");
                     int rimuovi = scanner.nextInt();
-                    if (rimuovi >= 1 && rimuovi <= esercizi.size()) {
+                    if (rimuovi >= 1 && rimuovi <= numeroEsercizi) {
                         rimuoviEsercizio(rimuovi - 1);
                         System.out.println("Esercizio rimosso!");
                     }
@@ -255,8 +237,8 @@ public class SchedaAllenamento {
                     visualizzaScheda();
                     System.out.print("Numero esercizio da modificare: ");
                     int modifica = scanner.nextInt();
-                    if (modifica >= 1 && modifica <= esercizi.size()) {
-                        Esercizio es = esercizi.get(modifica - 1);
+                    if (modifica >= 1 && modifica <= numeroEsercizi) {
+                        Esercizio es = esercizi[modifica - 1];
                         System.out.print("Nuove serie: ");
                         es.setSerie(scanner.nextInt());
                         System.out.print("Nuove ripetizioni: ");
@@ -272,7 +254,12 @@ public class SchedaAllenamento {
 
     // Eliminazione scheda
     public void eliminaScheda() {
-        svuota();
+        this.nomeScheda = null;
+        this.obiettivo = null;
+        for (int i = 0; i < numeroEsercizi; i++) {
+            esercizi[i] = null;
+        }
+        this.numeroEsercizi = 0;
         this.utente = null;
         System.out.println("\nScheda eliminata con successo!");
     }
@@ -280,6 +267,16 @@ public class SchedaAllenamento {
     @Override
     public String toString() {
         return "SchedaAllenamento [nomeScheda=" + nomeScheda + ", obiettivo=" + obiettivo + 
-               ", numeroEsercizi=" + esercizi.size() + "]";
+               ", numeroEsercizi=" + numeroEsercizi + "]";
     }
+
+	public void CreaScheda(Esercizio es, int serie, int rep, double peso) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getDettagli() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
