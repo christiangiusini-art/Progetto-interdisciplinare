@@ -1,0 +1,87 @@
+
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class RichiestaPersonalTrainer {
+    private static int contatoreId = 1;
+    private int id;
+    private Utente utente;
+    private PersonalTrainer trainerScelto;
+    private String obiettivo;
+    private int seduteSettimanali;
+    private String fasciaOrariaPreferita;
+    private String stato; // "In attesa", "Approvata", "Rifiutata", "Completata"
+    private Date dataRichiesta;
+    private Date dataInizio;
+    private String note;
+    
+    // Lista di tutte le richieste
+    private static ArrayList<RichiestaPersonalTrainer> tutteLeRichieste = new ArrayList<>();
+    
+    public RichiestaPersonalTrainer() {
+        this.id = contatoreId++;
+        this.dataRichiesta = new Date();
+        this.stato = "In attesa";
+    }
+    
+    public RichiestaPersonalTrainer(Utente utente, PersonalTrainer trainer, String obiettivo, 
+                                   int seduteSettimanali, String fasciaOraria, String note) {
+        this();
+        this.utente = utente;
+        this.trainerScelto = trainer;
+        this.obiettivo = obiettivo;
+        this.seduteSettimanali = seduteSettimanali;
+        this.fasciaOrariaPreferita = fasciaOraria;
+        this.note = note;
+    }
+    
+    // Getters e Setters
+    public int getId() { return id; }
+    public Utente getUtente() { return utente; }
+    public void setUtente(Utente utente) { this.utente = utente; }
+    public PersonalTrainer getTrainerScelto() { return trainerScelto; }
+    public void setTrainerScelto(PersonalTrainer trainerScelto) { this.trainerScelto = trainerScelto; }
+    public String getObiettivo() { return obiettivo; }
+    public void setObiettivo(String obiettivo) { this.obiettivo = obiettivo; }
+    public int getSeduteSettimanali() { return seduteSettimanali; }
+    public void setSeduteSettimanali(int seduteSettimanali) { this.seduteSettimanali = seduteSettimanali; }
+    public String getFasciaOrariaPreferita() { return fasciaOrariaPreferita; }
+    public void setFasciaOrariaPreferita(String fasciaOrariaPreferita) { this.fasciaOrariaPreferita = fasciaOrariaPreferita; }
+    public String getStato() { return stato; }
+    public void setStato(String stato) { this.stato = stato; }
+    public Date getDataRichiesta() { return dataRichiesta; }
+    public Date getDataInizio() { return dataInizio; }
+    public void setDataInizio(Date dataInizio) { this.dataInizio = dataInizio; }
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
+    
+    public static ArrayList<RichiestaPersonalTrainer> getTutteLeRichieste() {
+        return tutteLeRichieste;
+    }
+    
+    public static void aggiungiRichiesta(RichiestaPersonalTrainer richiesta) {
+        tutteLeRichieste.add(richiesta);
+    }
+    
+    public static ArrayList<RichiestaPersonalTrainer> getRichiestePerUtente(Utente utente) {
+        ArrayList<RichiestaPersonalTrainer> result = new ArrayList<>();
+        for (RichiestaPersonalTrainer r : tutteLeRichieste) {
+            if (r.getUtente().equals(utente)) {
+                result.add(r);
+            }
+        }
+        return result;
+    }
+    
+    public double calcolaCostoMensile() {
+        // Assumiamo 4 settimane al mese
+        return seduteSettimanali * 4 * trainerScelto.getCostoOrario();
+    }
+    
+    @Override
+    public String toString() {
+        return "Richiesta #" + id + " - " + trainerScelto.getNomeCompleto() + 
+               " | Stato: " + stato + " | Sedute/sett: " + seduteSettimanali;
+    }
+}
