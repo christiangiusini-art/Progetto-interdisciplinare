@@ -1,4 +1,4 @@
-package progetto;
+
 
 
 import java.util.Objects;
@@ -132,9 +132,16 @@ public class Utente {
 			System.out.println("Peso: " + peso);
 		}
 
-		/*creo il metodo toString che ritorna una stringa contenente i valori degli attributi della classe*/
-		
-		public String toString() {
+	// Metodo per ottenere le iniziali (usato dalla GUI)
+	public String iniziali() {
+		String inizialeNome = (nome != null && !nome.isEmpty()) ? nome.substring(0, 1).toUpperCase() : "?";
+		String inizialeCognome = (cognome != null && !cognome.isEmpty()) ? cognome.substring(0, 1).toUpperCase() : "?";
+		return inizialeNome + inizialeCognome;
+	}
+
+	/*creo il metodo toString che ritorna una stringa contenente i valori degli attributi della classe*/
+	
+	public String toString() {
 			return "Utente [nome=" + nome + ", cognome=" + cognome + ", eta=" + eta + ", username=" + username + ", email="
 			        + email + ", numTelefono=" + numTelefono + ", altezza=" + altezza + ", peso=" + peso + "]";
 		}
