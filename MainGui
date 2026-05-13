@@ -1,55 +1,20 @@
+package progetto;
 
+import javax.swing.SwingUtilities;
 
-import javax.swing.*;
-
-/**
- * Classe principale per avviare l'applicazione Palestra.
- * Crea le istanze necessarie e lancia la GUI.
- */
-public class Main {
-
+public class MainGui {
     public static void main(String[] args) {
-        // Imposta il Look and Feel di sistema per un aspetto più nativo
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Usa il look and feel di default se fallisce
-        }
-
-        // Esegui la GUI nel thread di Swing (Event Dispatch Thread)
+        // Avvio GUI nel thread di Swing (obbligatorio)
         SwingUtilities.invokeLater(() -> {
-            // Crea un utente di esempio
-            // Costruttore: (nome, cognome, username, email, numTelefono, peso, altezza)
-            Utente utente = new Utente(
-                "Mario",           // nome
-                "Rossi",           // cognome
-                "mrossi",          // username
-                "mario@email.it",  // email
-                333,        // telefono
-                78.5,              // peso (kg)
-                180                // altezza (cm)
-            );
-            utente.setEta(28);
-
-            // Crea la palestra (costruttore di default)
-            Palestra palestra = new Palestra();
-            palestra.setUtente(utente);
-
-            // Crea una scheda di allenamento
-            // Costruttore: (nomeScheda, obiettivo, utente)
-            SchedaAllenamento scheda = new SchedaAllenamento("Scheda Ipertrofia", "Massa Muscolare", utente);
-
-            // Aggiungi alcuni esercizi di esempio alla scheda
-            Esercizio[] eserciziDisponibili = SchedaAllenamento.getEserciziDisponibili();
-            if (eserciziDisponibili.length > 0) {
-                scheda.aggiungiEsercizio(eserciziDisponibili[0]); // Panca Piana
-                scheda.aggiungiEsercizio(eserciziDisponibili[1]); // Squat
-                scheda.aggiungiEsercizio(eserciziDisponibili[2]); // Stacco da Terra
+            try {
+                PalestraGui gui = new PalestraGui();
+                gui.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(null, 
+                    "Errore avvio applicazione: " + e.getMessage(), 
+                    "Errore", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
-
-            // Crea e mostra la GUI
-            PalestraGui gui = new PalestraGui(utente, palestra, scheda);
-            gui.setVisible(true);
         });
     }
 }
