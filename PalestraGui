@@ -1,0 +1,773 @@
+
+
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+
+/**
+ * Interfaccia grafica Swing per il progetto Palestra.
+ * Stile dark "gym" con accenti rossi.
+ *
+ * Avvio: classe Main -> launcha questa finestra.
+ */
+public class PalestraGui extends JFrame {
+
+    // ============ PALETTE ============
+    static final Color BG          = new Color(0x1A1413);
+    static final Color SURFACE     = new Color(0x251D1B);
+    static final Color SURFACE2    = new Color(0x2F2624);
+    static final Color BORDER      = new Color(0x3A2E2B);
+    static final Color FG          = new Color(0xF5EFEA);
+    static final Color MUTED       = new Color(0xA89A93);
+    static final Color PRIMARY     = new Color(0xE0552B); // rosso/arancio
+    static final Color PRIMARY_DK  = new Color(0xB83F1C);
+    static final Color SECONDARY   = new Color(0xE0B341); // giallo
+    static final Color DESTRUCTIVE = new Color(0xC0392B);
+
+    private Utente utente = new Utente();
+    private Palestra palestra = new Palestra();
+    private SchedaAllenamento scheda = new SchedaAllenamento();
+
+    private JPanel contentArea;
+    private CardLayout cards;
+
+    // riferimenti per refresh
+    private DefaultTableModel modelloScheda;
+    private JLabel lblNomeScheda;
+    private JLabel lblObiettivoScheda;
+    private JLabel lblConteggioEsercizi;
+
+    public PalestraGui(Utente utente, Palestra palestra, SchedaAllenamento scheda) {
+        super("LA PALESTRA ASR — Gestione Schede");
+        this.utente = utente;
+        this.palestra = palestra;
+        this.scheda = scheda;
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(1100, 720));
+        setSize(1280, 820);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(BG);
+        setLayout(new BorderLayout());
+
+        add(buildHeader(), BorderLayout.NORTH);
+        add(buildSidebar(), BorderLayout.WEST);
+        add(buildContent(), BorderLayout.CENTER);
+
+        cards.show(contentArea, "dashboard");
+    }
+
+    // ==================== HEADER ====================
+    private JComponent buildHeader() {
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBackground(SURFACE);
+        p.setBorder(new CompoundBorder(
+            new MatteBorder(0, 0, 1, 0, BORDER),
+            new EmptyBorder(14, 24, 14, 24)
+        ));
+
+        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        left.setOpaque(false);
+
+        JLabel logo = new JLabel("\uD83D\uDCAA"); // 💪
+        logo.setOpaque(true);
+        logo.setBackground(PRIMARY);
+        logo.setForeground(Color.WHITE);
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
+        logo.setPreferredSize(new Dimension(40, 40));
+        logo.setBorder(new EmptyBorder(0, 0, 0, 0));
+        logo.setFont(logo.getFont().deriveFont(Font.BOLD, 18f));
+
+        JPanel titles = new JPanel();
+        titles.setLayout(new BoxLayout(titles, BoxLayout.Y_AXIS));
+        titles.setOpaque(false);
+
+        JLabel sub = new JLabel("PALESTRA ASR");
+        sub.setForeground(MUTED);
+        sub.setFont(sub.getFont().deriveFont(Font.PLAIN, 10f));
+
+        JLabel title = new JLabel("FORZA & FERRO");
+        title.setForeground(FG);
+        title.setFont(new Font("SansSerif", Font.BOLD, 22));
+
+        titles.add(sub);
+        titles.add(title);
+
+        left.add(logo);
+        left.add(titles);
+
+        JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
+        right.setOpaque(false);
+
+        JPanel userInfo = new JPanel();
+        userInfo.setLayout(new BoxLayout(userInfo, BoxLayout.Y_AXIS));
+        userInfo.setOpaque(false);
+
+        JLabel hi = new JLabel("Benvenuto");
+        hi.setForeground(MUTED);
+        hi.setFont(hi.getFont().deriveFont(10f));
+        hi.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        JLabel uname = new JLabel("@" + (utente.getUsername() == null ? "utente" : utente.getUsername()));
+        uname.setForeground(FG);
+        uname.setFont(uname.getFont().deriveFont(Font.BOLD, 13f));
+        uname.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        userInfo.add(hi);
+        userInfo.add(uname);
+
+        JLabel avatar = new JLabel(utente.iniziali());
+        avatar.setOpaque(true);
+        avatar.setBackground(SURFACE2);
+        avatar.setForeground(PRIMARY);
+        avatar.setHorizontalAlignment(SwingConstants.CENTER);
+        avatar.setPreferredSize(new Dimension(40, 40));
+        avatar.setFont(avatar.getFont().deriveFont(Font.BOLD, 13f));
+
+        right.add(userInfo);
+        right.add(avatar);
+
+        p.add(left, BorderLayout.WEST);
+        p.add(right, BorderLayout.EAST);
+        return p;
+    }
+
+    // ==================== SIDEBAR ====================
+    private JComponent buildSidebar() {
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p.setBackground(SURFACE);
+        p.setBorder(new CompoundBorder(
+            new MatteBorder(0, 0, 0, 1, BORDER),
+            new EmptyBorder(20, 16, 20, 16)
+        ));
+        p.setPreferredSize(new Dimension(260, 0));
+
+        JLabel cap = new JLabel("MENU GESTIONE");
+        cap.setForeground(MUTED);
+        cap.setFont(cap.getFont().deriveFont(Font.PLAIN, 10f));
+        cap.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel title = new JLabel("SCHEDA");
+        title.setForeground(FG);
+        title.setFont(new Font("SansSerif", Font.BOLD, 22));
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        p.add(cap);
+        p.add(Box.createVerticalStrut(2));
+        p.add(title);
+        p.add(Box.createVerticalStrut(18));
+
+        String[][] voci = {
+            {"01", "Dashboard",                 "dashboard"},
+            {"02", "Esercizi disponibili",      "catalogo"},
+            {"03", "Crea / Modifica scheda",    "scheda"},
+            {"04", "Visualizza scheda",         "scheda"},
+            {"05", "Disponibilità palestra",    "palestra"},
+            {"06", "Profilo utente",            "utente"},
+        };
+
+        for (String[] v : voci) {
+            p.add(menuItem(v[0], v[1], v[2]));
+            p.add(Box.createVerticalStrut(6));
+        }
+
+        p.add(Box.createVerticalGlue());
+
+        JButton esci = new JButton("ESCI");
+        esci.setAlignmentX(Component.LEFT_ALIGNMENT);
+        esci.setBackground(SURFACE2);
+        esci.setForeground(MUTED);
+        esci.setFocusPainted(false);
+        esci.setBorder(new CompoundBorder(new LineBorder(BORDER), new EmptyBorder(10, 16, 10, 16)));
+        esci.addActionListener(e -> System.exit(0));
+        p.add(esci);
+
+        return p;
+    }
+
+    private JComponent menuItem(String num, String text, String card) {
+        JPanel row = new JPanel(new BorderLayout(10, 0));
+        row.setBackground(SURFACE);
+        row.setBorder(new CompoundBorder(new LineBorder(SURFACE), new EmptyBorder(10, 12, 10, 12)));
+        row.setAlignmentX(Component.LEFT_ALIGNMENT);
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
+        row.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        JLabel n = new JLabel(num);
+        n.setForeground(PRIMARY);
+        n.setFont(n.getFont().deriveFont(Font.BOLD, 11f));
+
+        JLabel t = new JLabel(text);
+        t.setForeground(FG);
+
+        JLabel arr = new JLabel("›");
+        arr.setForeground(MUTED);
+
+        row.add(n, BorderLayout.WEST);
+        row.add(t, BorderLayout.CENTER);
+        row.add(arr, BorderLayout.EAST);
+
+        row.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                row.setBackground(SURFACE2);
+                row.setBorder(new CompoundBorder(new LineBorder(BORDER), new EmptyBorder(10, 12, 10, 12)));
+            }
+            @Override public void mouseExited(MouseEvent e) {
+                row.setBackground(SURFACE);
+                row.setBorder(new CompoundBorder(new LineBorder(SURFACE), new EmptyBorder(10, 12, 10, 12)));
+            }
+            @Override public void mouseClicked(MouseEvent e) {
+                cards.show(contentArea, card);
+            }
+        });
+        return row;
+    }
+
+    // ==================== CONTENT AREA ====================
+    private JComponent buildContent() {
+        cards = new CardLayout();
+        contentArea = new JPanel(cards);
+        contentArea.setBackground(BG);
+        contentArea.setBorder(new EmptyBorder(20, 24, 20, 24));
+
+        contentArea.add(buildDashboard(),  "dashboard");
+        contentArea.add(buildCatalogo(),   "catalogo");
+        contentArea.add(buildScheda(),     "scheda");
+        contentArea.add(buildPalestra(),   "palestra");
+        contentArea.add(buildUtente(),     "utente");
+
+        JScrollPane sp = new JScrollPane(contentArea,
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setBorder(null);
+        sp.getViewport().setBackground(BG);
+        sp.getVerticalScrollBar().setUnitIncrement(16);
+        return sp;
+    }
+
+    // -------- DASHBOARD --------
+    private JComponent buildDashboard() {
+        JPanel root = new JPanel();
+        root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+        root.setBackground(BG);
+
+        // hero
+        JPanel hero = card();
+        hero.setLayout(new BorderLayout());
+        hero.setBorder(new CompoundBorder(hero.getBorder(), new EmptyBorder(28, 32, 28, 32)));
+
+        JPanel heroL = new JPanel();
+        heroL.setLayout(new BoxLayout(heroL, BoxLayout.Y_AXIS));
+        heroL.setOpaque(false);
+
+        JLabel pill = pill("SESSIONE DI OGGI");
+        pill.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel h1 = new JLabel("COSTRUISCI");
+        h1.setForeground(FG);
+        h1.setFont(new Font("SansSerif", Font.BOLD, 44));
+        h1.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel h2 = new JLabel("LA TUA FORZA.");
+        h2.setForeground(PRIMARY);
+        h2.setFont(new Font("SansSerif", Font.BOLD, 44));
+        h2.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel desc = new JLabel("<html>Gestisci abbonamento, crea schede personalizzate e tieni traccia di ogni serie.</html>");
+        desc.setForeground(MUTED);
+        desc.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JPanel btns = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        btns.setOpaque(false);
+        btns.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btns.add(primaryButton("+ NUOVA SCHEDA", e -> cards.show(contentArea, "scheda")));
+        btns.add(secondaryButton("VISUALIZZA", e -> cards.show(contentArea, "scheda")));
+
+        heroL.add(pill);
+        heroL.add(Box.createVerticalStrut(14));
+        heroL.add(h1);
+        heroL.add(h2);
+        heroL.add(Box.createVerticalStrut(10));
+        heroL.add(desc);
+        heroL.add(Box.createVerticalStrut(18));
+        heroL.add(btns);
+
+        JPanel stats = new JPanel(new GridLayout(1, 3, 12, 0));
+        stats.setOpaque(false);
+        
+        
+        hero.add(heroL, BorderLayout.CENTER);
+        hero.add(stats, BorderLayout.EAST);
+
+        root.add(hero);
+        root.add(Box.createVerticalStrut(16));
+
+        // riepilogo
+        JPanel grid = new JPanel(new GridLayout(1, 2, 16, 0));
+        grid.setOpaque(false);
+        grid.add(buildSchedaPreview());
+        grid.add(buildPalestraPreview());
+        root.add(grid);
+
+        return root;
+    }
+
+    private JComponent buildSchedaPreview() {
+        JPanel p = card();
+        p.setLayout(new BorderLayout(0, 12));
+
+        JPanel head = new JPanel(new BorderLayout());
+        head.setOpaque(false);
+        JLabel l = new JLabel("SCHEDA ATTIVA");
+        l.setForeground(FG);
+        l.setFont(new Font("SansSerif", Font.BOLD, 18));
+        JButton b = secondaryButton("APRI", e -> cards.show(contentArea, "scheda"));
+        head.add(l, BorderLayout.WEST);
+        head.add(b, BorderLayout.EAST);
+
+        JPanel list = new JPanel();
+        list.setOpaque(false);
+        list.setLayout(new BoxLayout(list, BoxLayout.Y_AXIS));
+        List<Esercizio> es = scheda.getEsercizi();
+        if (es.isEmpty()) {
+            JLabel empty = new JLabel("Nessun esercizio. Crea la tua scheda.");
+            empty.setForeground(MUTED);
+            list.add(empty);
+        } else {
+            for (int i = 0; i < Math.min(5, es.size()); i++) {
+                Esercizio e = es.get(i);
+                JPanel row = new JPanel(new BorderLayout());
+                row.setBackground(SURFACE2);
+                row.setBorder(new EmptyBorder(10, 12, 10, 12));
+                row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+                JLabel nm = new JLabel((i + 1) + ".  " + e.getNome());
+                nm.setForeground(FG);
+                JLabel meta = new JLabel(e.getSerie() + "×" + e.getRipetizioni() + "  ·  " + e.getTempoRecupero() + "s");
+                meta.setForeground(MUTED);
+                row.add(nm, BorderLayout.WEST);
+                row.add(meta, BorderLayout.EAST);
+                list.add(row);
+                list.add(Box.createVerticalStrut(6));
+            }
+        }
+
+        p.add(head, BorderLayout.NORTH);
+        p.add(list, BorderLayout.CENTER);
+        return p;
+    }
+
+    private JComponent buildPalestraPreview() {
+        JPanel p = card();
+        p.setLayout(new BorderLayout(0, 12));
+
+        JLabel l = new JLabel("PALESTRA");
+        l.setForeground(FG);
+        l.setFont(new Font("SansSerif", Font.BOLD, 18));
+
+        JPanel info = new JPanel();
+        info.setOpaque(false);
+        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
+
+        info.add(infoRow("Nome", palestra.getNomePalestra()));
+        info.add(Box.createVerticalStrut(6));
+        info.add(infoRow("Indirizzo", palestra.getIndirizzo()));
+        info.add(Box.createVerticalStrut(6));
+        info.add(infoRow("Abbonamento", palestra.getTipoAbbonamento()));
+        info.add(Box.createVerticalStrut(6));
+        info.add(infoRow("Costo annuale", "€ " + Palestra.costoAnnuale));
+        info.add(Box.createVerticalStrut(6));
+        info.add(infoRow("Costo mensile", "€ " + Palestra.costoMensile));
+
+        p.add(l, BorderLayout.NORTH);
+        p.add(info, BorderLayout.CENTER);
+        return p;
+    }
+
+    private JComponent infoRow(String k, String v) {
+        JPanel r = new JPanel(new BorderLayout());
+        r.setBackground(SURFACE2);
+        r.setBorder(new EmptyBorder(10, 12, 10, 12));
+        r.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        JLabel a = new JLabel(k); a.setForeground(MUTED);
+        JLabel b = new JLabel(v); b.setForeground(FG);
+        r.add(a, BorderLayout.WEST);
+        r.add(b, BorderLayout.EAST);
+        return r;
+    }
+
+    // -------- CATALOGO --------
+    private JComponent buildCatalogo() {
+        JPanel root = new JPanel(new BorderLayout(0, 16));
+        root.setBackground(BG);
+
+        JPanel head = new JPanel(new BorderLayout());
+        head.setOpaque(false);
+        JLabel t = new JLabel("ESERCIZI DISPONIBILI");
+        t.setFont(new Font("SansSerif", Font.BOLD, 26));
+        t.setForeground(FG);
+        JLabel sub = new JLabel("10 esercizi precaricati");
+        sub.setForeground(MUTED);
+        head.add(t, BorderLayout.WEST);
+        head.add(sub, BorderLayout.EAST);
+
+        JPanel grid = new JPanel(new GridLayout(0, 5, 12, 12));
+        grid.setOpaque(false);
+
+        Esercizio[] all = SchedaAllenamento.getEserciziDisponibili();
+        for (int i = 0; i < all.length; i++) {
+            Esercizio e = all[i];
+            grid.add(esercizioCard(i + 1, e, true));
+        }
+
+        root.add(head, BorderLayout.NORTH);
+        root.add(grid, BorderLayout.CENTER);
+        return root;
+    }
+
+    private JComponent esercizioCard(int idx, Esercizio e, boolean addable) {
+        JPanel c = card();
+        c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
+
+        JLabel num = new JLabel(String.format("%02d", idx));
+        num.setForeground(MUTED);
+        num.setFont(num.getFont().deriveFont(Font.BOLD, 11f));
+        num.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel nm = new JLabel("<html><b>" + e.getNome().toUpperCase() + "</b></html>");
+        nm.setForeground(FG);
+        nm.setFont(nm.getFont().deriveFont(Font.BOLD, 15f));
+        nm.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel gr = new JLabel(e.getGruppoMuscolare().toUpperCase());
+        gr.setForeground(PRIMARY);
+        gr.setFont(gr.getFont().deriveFont(Font.PLAIN, 10f));
+        gr.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel meta = new JLabel(e.getSerie() + "×" + e.getRipetizioni() + "   ·   " + e.getTempoRecupero() + "s rec");
+        meta.setForeground(MUTED);
+        meta.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        c.add(num);
+        c.add(Box.createVerticalStrut(6));
+        c.add(nm);
+        c.add(gr);
+        c.add(Box.createVerticalStrut(10));
+        c.add(meta);
+
+        if (addable) {
+            c.add(Box.createVerticalStrut(10));
+            JButton add = primaryButton("+ AGGIUNGI", evt -> {
+                if (scheda.aggiungiEsercizio(e)) {
+                    JOptionPane.showMessageDialog(this, "Aggiunto a scheda: " + e.getNome());
+                    refreshSchedaModel();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Scheda piena (max " + SchedaAllenamento.MAX_ESERCIZI + ")");
+                }
+            });
+            add.setAlignmentX(Component.LEFT_ALIGNMENT);
+            c.add(add);
+        }
+        return c;
+    }
+
+    // -------- SCHEDA --------
+    private JComponent buildScheda() {
+        JPanel root = new JPanel(new BorderLayout(0, 14));
+        root.setBackground(BG);
+
+        // header scheda
+        JPanel head = card();
+        head.setLayout(new BorderLayout());
+
+        JPanel left = new JPanel();
+        left.setOpaque(false);
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+
+        lblNomeScheda = new JLabel(scheda.getNomeScheda() != null ? scheda.getNomeScheda() : "LA MIA SCHEDA");
+        lblNomeScheda.setForeground(FG);
+        lblNomeScheda.setFont(new Font("SansSerif", Font.BOLD, 24));
+
+        lblObiettivoScheda = new JLabel("Obiettivo: " + (scheda.getObiettivo() != null ? scheda.getObiettivo() : "Ipertrofia"));
+        lblObiettivoScheda.setForeground(MUTED);
+
+        lblConteggioEsercizi = new JLabel(scheda.getEsercizi().size() + " / " + SchedaAllenamento.MAX_ESERCIZI + " esercizi");
+        lblConteggioEsercizi.setForeground(PRIMARY);
+
+        left.add(lblNomeScheda);
+        left.add(lblObiettivoScheda);
+        left.add(Box.createVerticalStrut(4));
+        left.add(lblConteggioEsercizi);
+
+        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        actions.setOpaque(false);
+        actions.add(secondaryButton("MODIFICA NOME", e -> {
+            String n = JOptionPane.showInputDialog(this, "Nome scheda:", scheda.getNomeScheda());
+            if (n != null && !n.isBlank()) {
+                scheda.setNomeScheda(n);
+                lblNomeScheda.setText(n);
+            }
+        }));
+        actions.add(secondaryButton("OBIETTIVO", e -> {
+            String o = JOptionPane.showInputDialog(this, "Obiettivo:", scheda.getObiettivo());
+            if (o != null && !o.isBlank()) {
+                scheda.setObiettivo(o);
+                lblObiettivoScheda.setText("Obiettivo: " + o);
+            }
+        }));
+        actions.add(dangerButton("ELIMINA", e -> {
+            int r = JOptionPane.showConfirmDialog(this, "Svuotare la scheda?", "Conferma", JOptionPane.YES_NO_OPTION);
+            if (r == JOptionPane.YES_OPTION) { scheda.svuota(); refreshSchedaModel(); }
+        }));
+
+        head.add(left, BorderLayout.WEST);
+        head.add(actions, BorderLayout.EAST);
+
+        // tabella esercizi
+        modelloScheda = new DefaultTableModel(
+            new Object[]{"#", "Esercizio", "Gruppo", "Serie", "Reps", "Recupero (s)"}, 0) {
+            @Override public boolean isCellEditable(int r, int c) { return false; }
+        };
+        JTable table = new JTable(modelloScheda);
+        styleTable(table);
+        refreshSchedaModel();
+
+        JScrollPane sp = new JScrollPane(table);
+        sp.getViewport().setBackground(SURFACE);
+        sp.setBorder(new LineBorder(BORDER));
+
+        JPanel tableCard = card();
+        tableCard.setLayout(new BorderLayout(0, 10));
+
+        JPanel tHead = new JPanel(new BorderLayout());
+        tHead.setOpaque(false);
+        JLabel th = new JLabel("ESERCIZI IN SCHEDA");
+        th.setForeground(FG);
+        th.setFont(new Font("SansSerif", Font.BOLD, 16));
+        JPanel tActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        tActions.setOpaque(false);
+        tActions.add(primaryButton("+ AGGIUNGI DAL CATALOGO", e -> cards.show(contentArea, "catalogo")));
+        tActions.add(dangerButton("RIMUOVI SELEZIONATO", e -> {
+            int row = table.getSelectedRow();
+            if (row < 0) { JOptionPane.showMessageDialog(this, "Seleziona un esercizio."); return; }
+            scheda.rimuoviEsercizio(row);
+            refreshSchedaModel();
+        }));
+        tHead.add(th, BorderLayout.WEST);
+        tHead.add(tActions, BorderLayout.EAST);
+
+        tableCard.add(tHead, BorderLayout.NORTH);
+        tableCard.add(sp, BorderLayout.CENTER);
+
+        root.add(head, BorderLayout.NORTH);
+        root.add(tableCard, BorderLayout.CENTER);
+        return root;
+    }
+
+    private void refreshSchedaModel() {
+        if (modelloScheda == null) return;
+        modelloScheda.setRowCount(0);
+        List<Esercizio> es = scheda.getEsercizi();
+        for (int i = 0; i < es.size(); i++) {
+            Esercizio e = es.get(i);
+            modelloScheda.addRow(new Object[]{
+                String.format("%02d", i + 1),
+                e.getNome(), e.getGruppoMuscolare(),
+                e.getSerie(), e.getRipetizioni(), e.getTempoRecupero()
+            });
+        }
+        if (lblConteggioEsercizi != null)
+            lblConteggioEsercizi.setText(es.size() + " / " + SchedaAllenamento.MAX_ESERCIZI + " esercizi");
+    }
+
+    private void styleTable(JTable t) {
+        t.setBackground(SURFACE);
+        t.setForeground(FG);
+        t.setGridColor(BORDER);
+        t.setRowHeight(36);
+        t.setSelectionBackground(PRIMARY_DK);
+        t.setSelectionForeground(Color.WHITE);
+        t.setShowVerticalLines(false);
+        t.setIntercellSpacing(new Dimension(0, 1));
+        JTableHeader h = t.getTableHeader();
+        h.setBackground(SURFACE2);
+        h.setForeground(MUTED);
+        h.setFont(h.getFont().deriveFont(Font.BOLD, 11f));
+        h.setBorder(new MatteBorder(0, 0, 1, 0, BORDER));
+    }
+
+    // -------- PALESTRA --------
+    private JComponent buildPalestra() {
+        JPanel root = new JPanel(new BorderLayout(0, 16));
+        root.setBackground(BG);
+
+        JLabel t = new JLabel("ORARI SETTIMANALI");
+        t.setForeground(FG);
+        t.setFont(new Font("SansSerif", Font.BOLD, 26));
+
+        JPanel grid = new JPanel(new GridLayout(1, 7, 10, 10));
+        grid.setOpaque(false);
+        for (int i = 0; i < Palestra.giorni.length; i++) {
+            JPanel c = card();
+            c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
+            JLabel g = new JLabel(Palestra.giorni[i].toUpperCase());
+            g.setForeground(PRIMARY);
+            g.setFont(g.getFont().deriveFont(Font.BOLD, 12f));
+            g.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel ore = new JLabel(String.format("%02d:00 — %02d:00",
+                Palestra.orarioApertura[i], Palestra.orarioChiusura[i]));
+            ore.setForeground(FG);
+            ore.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel st = new JLabel("APERTA");
+            st.setForeground(SECONDARY);
+            st.setFont(st.getFont().deriveFont(Font.BOLD, 10f));
+            st.setAlignmentX(Component.CENTER_ALIGNMENT);
+            c.add(g);
+            c.add(Box.createVerticalStrut(8));
+            c.add(ore);
+            c.add(Box.createVerticalStrut(8));
+            c.add(st);
+            grid.add(c);
+        }
+
+        JPanel abb = card();
+        abb.setLayout(new BorderLayout(12, 0));
+        JPanel l = new JPanel();
+        l.setOpaque(false);
+        l.setLayout(new BoxLayout(l, BoxLayout.Y_AXIS));
+        JLabel a1 = new JLabel("ABBONAMENTO ANNUALE");
+        a1.setForeground(MUTED);
+        a1.setFont(a1.getFont().deriveFont(Font.BOLD, 10f));
+        JLabel a2 = new JLabel("€ " + (int) Palestra.costoAnnuale + " / anno");
+        a2.setForeground(FG);
+        a2.setFont(new Font("SansSerif", Font.BOLD, 28));
+        JLabel a3 = new JLabel("oppure € " + (int) Palestra.costoMensile + " / mese");
+        a3.setForeground(MUTED);
+        l.add(a1); l.add(a2); l.add(a3);
+
+        JButton sub = primaryButton("SOTTOSCRIVI",
+            e -> JOptionPane.showMessageDialog(this, "Abbonamento confermato!"));
+        abb.add(l, BorderLayout.WEST);
+        abb.add(sub, BorderLayout.EAST);
+
+        JPanel center = new JPanel(new BorderLayout(0, 14));
+        center.setOpaque(false);
+        center.add(grid, BorderLayout.NORTH);
+        center.add(abb, BorderLayout.CENTER);
+
+        root.add(t, BorderLayout.NORTH);
+        root.add(center, BorderLayout.CENTER);
+        return root;
+    }
+
+    // -------- UTENTE --------
+    private JComponent buildUtente() {
+        JPanel root = new JPanel(new BorderLayout(0, 16));
+        root.setBackground(BG);
+
+        JLabel t = new JLabel("PROFILO UTENTE");
+        t.setForeground(FG);
+        t.setFont(new Font("SansSerif", Font.BOLD, 26));
+
+        JPanel c = card();
+        c.setLayout(new GridLayout(0, 2, 12, 10));
+        addField(c, "Nome",     utente.getNome());
+        addField(c, "Cognome",  utente.getCognome());
+        addField(c, "Età",      String.valueOf(utente.getEta()));
+        addField(c, "Username", utente.getUsername());
+        addField(c, "Email",    utente.getEmail());
+        addField(c, "Telefono", String.valueOf(utente.getNumTelefono()));
+        addField(c, "Peso",     utente.getPeso() + " kg");
+        addField(c, "Altezza",  utente.getAltezza() + " cm");
+
+        root.add(t, BorderLayout.NORTH);
+        root.add(c, BorderLayout.CENTER);
+        return root;
+    }
+
+    private void addField(JPanel parent, String k, String v) {
+        JPanel row = new JPanel(new BorderLayout());
+        row.setBackground(SURFACE2);
+        row.setBorder(new EmptyBorder(12, 14, 12, 14));
+        JLabel kl = new JLabel(k.toUpperCase());
+        kl.setForeground(MUTED);
+        kl.setFont(kl.getFont().deriveFont(Font.BOLD, 10f));
+        JLabel vl = new JLabel(v == null ? "—" : v);
+        vl.setForeground(FG);
+        row.add(kl, BorderLayout.NORTH);
+        row.add(vl, BorderLayout.SOUTH);
+        parent.add(row);
+    }
+
+    // ==================== UI HELPERS ====================
+    private JPanel card() {
+        JPanel p = new JPanel();
+        p.setBackground(SURFACE);
+        p.setBorder(new CompoundBorder(
+            new LineBorder(BORDER), new EmptyBorder(18, 20, 18, 20)));
+        return p;
+    }
+
+    private JLabel pill(String text) {
+        JLabel l = new JLabel("  " + text + "  ");
+        l.setOpaque(true);
+        l.setBackground(new Color(PRIMARY.getRed(), PRIMARY.getGreen(), PRIMARY.getBlue(), 40));
+        l.setForeground(PRIMARY);
+        l.setFont(l.getFont().deriveFont(Font.BOLD, 10f));
+        l.setBorder(new LineBorder(PRIMARY_DK));
+        return l;
+    }
+
+    private JPanel statCard(String label, String value) {
+        JPanel p = new JPanel();
+        p.setBackground(SURFACE2);
+        p.setBorder(new CompoundBorder(new LineBorder(BORDER), new EmptyBorder(14, 14, 14, 14)));
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        JLabel v = new JLabel(value);
+        v.setForeground(FG);
+        v.setFont(new Font("SansSerif", Font.BOLD, 22));
+        JLabel l = new JLabel(label.toUpperCase());
+        l.setForeground(MUTED);
+        l.setFont(l.getFont().deriveFont(Font.BOLD, 10f));
+        p.add(v); p.add(Box.createVerticalStrut(4)); p.add(l);
+        return p;
+    }
+
+    private JButton primaryButton(String text, ActionListener a) {
+        JButton b = new JButton(text);
+        b.setBackground(PRIMARY);
+        b.setForeground(Color.WHITE);
+        b.setFocusPainted(false);
+        b.setBorder(new EmptyBorder(10, 18, 10, 18));
+        b.setFont(b.getFont().deriveFont(Font.BOLD, 12f));
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        b.addActionListener(a);
+        return b;
+    }
+
+    private JButton secondaryButton(String text, ActionListener a) {
+        JButton b = new JButton(text);
+        b.setBackground(SURFACE2);
+        b.setForeground(FG);
+        b.setFocusPainted(false);
+        b.setBorder(new CompoundBorder(new LineBorder(BORDER), new EmptyBorder(10, 16, 10, 16)));
+        b.setFont(b.getFont().deriveFont(Font.BOLD, 12f));
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        b.addActionListener(a);
+        return b;
+    }
+
+    private JButton dangerButton(String text, ActionListener a) {
+        JButton b = new JButton(text);
+        b.setBackground(new Color(DESTRUCTIVE.getRed(), DESTRUCTIVE.getGreen(), DESTRUCTIVE.getBlue(), 60));
+        b.setForeground(new Color(0xFF8A7A));
+        b.setFocusPainted(false);
+        b.setBorder(new CompoundBorder(new LineBorder(DESTRUCTIVE), new EmptyBorder(10, 16, 10, 16)));
+        b.setFont(b.getFont().deriveFont(Font.BOLD, 12f));
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        b.addActionListener(a);
+        return b;
+    }
+}
