@@ -1,0 +1,24 @@
+SchedaAllenamento
+- -nomeScheda : String
+- obiettivo : String
+- esercizi : List<Esercizio>
+- utente : Utente
+
++ getNomeScheda() : String
++ setNomeScheda(String) : void
++ getObiettivo() : String
++ setObiettivo (String) : void
++ getEsercizi() : List<Esercizio>
++ setEsercizi(ArrayList<Esercizio>) : void
++ getUtente() : Utente
++ setUtente(Utente) : void
++ aggiungiEsercizio(Esercizio) : boolean
++ rimuoviEsercizio(int indice) : void
++ getEserciziDisponibili() : Esercizio[] 
++ svuota() : void
++ mostraEserciziDisponibili() : void 
++ creaScheda(Scanner) : void
++ visualizzaScheda() : void
++ modificaScheda(Scanner) : void
++ eliminaScheda() : void
++ toString() : String
